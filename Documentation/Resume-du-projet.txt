@@ -1,0 +1,19 @@
+Résumé du projet:
+
+EcoRide est une startup de covoiturage écologique permettant de mettre en relation des conducteurs et des passagers pour des trajets en voiture, avec une mise en avant des véhicules électriques.
+Ce projet est réalisé dans le cadre de l’ECF du titre professionnel Développeur Web et Web Mobile.
+José à pour objectifs avec ce site de permettre de réduire l’impact environnemental des déplacements en proposant une plateforme simple et sécurisée de covoiturage qui favorise les transports écologique.
+
+Pour cela il me demande de mettre en œuvre une application web complète (front, back, bases de données, déploiement).
+C'est à dire que conformément au cahier des charges fourni par José les pages du site web sont stylisé afin de suscité l'écologie et la modernité chez l'utilisateur. 
+
+D'autre part la sécurité est primordiale afin d'assurer le bon fonctionnement de l'application web pour les utilisateurs.
+La plateforme est modérer par les employés qui peuvent valider les avis et contacté les utilisateurs en cas de problèmes lors d'une course.
+Quand aux administrateurs, ils ont la capacité de suspendre un compte en cas de non respects des règles du site web.
+
+De plus un espace administratif est conçu de manière de permettre a la startup de consulté leurs bénéfices de leur site et le nombre de covoiturage effectuer sur une certaine durée.
+
+
+Projet réalisé par : Ferré Mathis
+
+Licence : Projet pédagogique – Studi

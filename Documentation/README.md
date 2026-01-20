@@ -75,6 +75,7 @@ Utilisateur mail et mot de passe : test@mail.com azertyuiop/1
 Admin mail et mot de passe : admin@mail.com  Azertyuiop/1
 Employe mail et mot de passe : employe@mail.com  Azertyuiop/1
 
+lien du dépot github : https://github.com/Nidor93/Projet-Ecoride.git
 lien anglophone : https://youtu.be/aUW5GAFhu6s?si=lc3GcGBGrVO87Scg
 lien du gestion de projet : https://trello.com/invite/b/696e073f3b1e1ae83615e77b/ATTIacdaead3476a15092da66e4df2762b602418D8DB/gestion-de-projet
 
