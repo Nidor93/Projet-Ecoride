@@ -1,0 +1,61 @@
+Identité visuelle globale
+L'identité visuelle d'EcoRide se veut écologique, moderne et apaisante. Elle repose sur l'utilisation de vert, symbole de la nature
+
+Palette de couleurs :
+
+Couleurs principales :
+La couleur dominante est un vert forêt, utilisé pour structurer l'interface et guider l'œil de l'utilisateur
+Eco Green (couleur primaire)
+Hex : #198754
+Utilisation : boutons, pieds de page (footer), titres (h2), bordures, icônes, marqueurs de timeline
+
+
+Eco Dark (survol et action) :
+Hex : #146c43
+
+Couleurs secondaires :
+Overlay vert
+RGBA : rgba(0, 100, 0, 0.6) à 0.7
+
+Avis et étoiles :
+Hex : #ffc107
+
+Couleurs de fond (Backgrounds) :
+Body light gray : #f8f9fa fond général de la page
+Card white : #ffffff fond des cartes de contenu et filtres
+Card off-white : #f5f5f5 fond des formulaires d'inscription et de connexion
+Badge green : #e6f4ea
+
+Typographie :
+La police d'écriture non spécifique, mais les styles appliquer définissent la hiérarchie suivante :
+
+Titres (H2) :
+Couleur : #198754 (eco green)
+Style : gras (font-weight: bold)
+
+Mise en valeur (.highlight) :
+Couleur : #198754
+Style : gras
+
+Corps de texte :
+Couleur par défaut, lisible sur fond clair
+
+Composants d'interface : 
+L'interface privilégie les formes arrondies ( border radius) pour un aspect moderne
+
+Boutons (.btn-ecoride) :
+Fond : #198754
+Texte : blanc
+
+Cartes (Cards) : 
+Les contenus sont regroupés dans des conteneurs distincts avec des ombres pour crée de la profondeur
+Ombres : rgba(0, 0, 0, 0.1)
+
+Bordure latérale (Trajets) : Une bordure gauche en vert #198754 identifie les cartes de trajet
+
+Badges et tag :
+Style : fond vert très pâle (#e6f4ea), texte vert foncé, bordure fine verte
+
+Iconographie et Images :
+Images sources : fait par IA ou provenant de Pixabay
+Bordure : couleur #198754
