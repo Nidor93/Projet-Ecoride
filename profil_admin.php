@@ -45,14 +45,12 @@ $users = $pdo->query("SELECT * FROM utilisateur WHERE role != 'admin' ORDER BY r
 $queryTrajets = $pdo->query("SELECT date_depart, COUNT(*) as total FROM trajet GROUP BY date_depart ORDER BY date_depart ASC LIMIT 10");
 $statsTrajets = $queryTrajets->fetchAll(PDO::FETCH_ASSOC);
 
-// STAT 2 : Répartition Électrique vs Thermique (pour un graphique en camembert)
 $queryEco = $pdo->query("SELECT 
     SUM(CASE WHEN est_electrique = 1 THEN 1 ELSE 0 END) as electrique,
     SUM(CASE WHEN est_electrique = 0 THEN 1 ELSE 0 END) as thermique
     FROM voiture");
 $statsEco = $queryEco->fetch(PDO::FETCH_ASSOC);
 
-// Conversion en JSON pour JavaScript
 $jsonTrajets = json_encode($statsTrajets);
 $jsonEco = json_encode($statsEco);
 

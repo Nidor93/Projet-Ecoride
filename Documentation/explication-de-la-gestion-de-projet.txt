@@ -1,0 +1,30 @@
+Méthodologie Kanban :
+Pour ce projet, j’ai adopté la méthodologie Kanban.
+Ce choix a été motivé par la nécessité d'avoir une vision claire des fonctionnalités à développer en ayant un tableau simplement organiser.
+Le Kanban permet de visualiser le flux de travail et d'identifier immédiatement les blocages.
+
+Organisation du Tableau de Bord :
+Mon tableau de bord réalisé sur Trello respecte les 5 colonnes demandées dans l'énoncé pour assurer un bon suivi :
+
+Fonctionnalités prévues (Backlog) : Cette colonne contient l'ensemble des User Stories (US) extraites du cahier des charges, triées par importance. J'ai placé les fonctions critiques (recherche, création de compte) en haut de liste.
+A faire (Sprint) : Les tâches que j'ai décidé de traiter pour la session de travail actuelle (ex: Maquettage et Setup BDD).
+En cours (In Progress) : La fonctionnalité sur laquelle je travaille activement. Pour garantir la qualité, je m'impose de ne pas avoir plus de deux tâches simultanés ici.
+Terminé (Branche développement) : Fonctionnalités coder et tester localement, puis fusionner sur la branche develop.
+Merge (Branche principale) : Fonctionnalités valider et fusionner sur la branche main, constituant la version stable et final du site.
+
+Gestion du versionnage avec Git :
+La gestion de projet est couplée à une stratégie de branches stricte (Git Flow) pour éviter les régressions et garantir la sécurité du code.
+Isolement : Chaque nouvelle fonctionnalité est développée sur une branche isolée.
+Intégration : Une fois la fonction coder, elle est fusionnée dans la branche development pour les tests d'intégration.
+Livraison : Le passage vers la branche main ne se fait qu'une fois la fonctionnalité totalement stable.
+
+Priorisation des fonctionnalités :
+J'ai découpé le projet en trois phases :
+Phase 1 (Fondations) : Installation de l'environnement, création de la base de données et page d'accueil.
+Phase 2 (Cœur de métier) : Système de recherche de trajet, création de compte et gestion des crédits (US 1 à 11).
+Phase 3 (Administration) : Modération des avis et espace administrateur (US 12, 13).
+
+Recherche et Auto-formation :
+La gestion de projet a également nécessité des phases de recherche. Pour l'implémentation de la sécurité (hachage des mots de passe) et des fonctionnalités spécifiques (filtre).
+J'ai consulté des documentations techniques anglophones (ex: PHP.net, tutoriels YouTube, blog). 
+Cela m'a permis d'intégrer des solutions modernes et sécurisées conformément aux attentes du client.
