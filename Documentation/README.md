@@ -4,7 +4,7 @@ EcoRide est une startup de covoiturage écologique permettant de mettre en relat
 Ce projet est réalisé dans le cadre de l’ECF du titre professionnel développeur web et web mobile.
 José à pour objectifs avec ce site de permettre de réduire l’impact environnemental des déplacements en proposant une plateforme simple et sécurisée de covoiturage qui favorise les transports écologique.
 
-Pour cela il me demande de mettre en œuvre une application web complète (front, back, bases de données, déploiement).
+Pour cela il me demande de mettre en œuvre une application web complète (front, back, bases de données, déploiment).
 C'est à dire que conformément au cahier des charges fourni par José les pages du site web sont stylisé afin de suscité l'écologie et la modernité chez l'utilisateur. 
 
 D'autre part la sécurité est primordiale afin d'assurer le bon fonctionnement de l'application web pour les utilisateurs.
@@ -14,7 +14,6 @@ Quand aux administrateurs, ils ont la capacité de suspendre un compte en cas de
 De plus un espace administratif est conçu de manière de permettre a la startup de consulté leurs bénéfices de leur site et le nombre de covoiturage effectuer sur une certaine durée.
 
 Objectifs :
-
 Réduire l’impact environnemental des déplacements
 Proposer une plateforme simple et sécurisée de covoiturage
 Mettre en œuvre une application web complète (front, back, bases de données, déploiement)
@@ -25,14 +24,14 @@ Explication de la gestion de projet :
 
 Méthodologie Kanban :
 Pour ce projet, j’ai adopté la méthodologie Kanban.
-Ce choix a été motivé par la nécessité d'avoir une vision claire des fonctionnalités à développer en ayant un tableau simplement organiser.
+Cela permet d'avoir une vision claire des fonctionnalités à développer en ayant un tableau simplement organiser.
 Le Kanban permet de visualiser le flux de travail et d'identifier immédiatement les blocages.
 
 Organisation du tableau de bord :
 Mon tableau de bord réalisé sur Trello respecte les 5 colonnes demandées dans l'énoncé pour assurer un bon suivi :
 
-Fonctionnalités prévues (Backlog) : Cette colonne contient l'ensemble des User Stories (US) extraites du cahier des charges, triées par importance. J'ai placé les fonctions critiques (recherche, création de compte) en haut de liste.
-A faire (Sprint) : les taches que j'ai décidé de traiter pour la session de travail actuelle (ex: Maquettage et Setup BDD).
+Fonctionnalités prévues (Backlog) : cette colonne contient l'ensemble des User Stories (US) extraites du cahier des charges, triées par importance. J'ai placé les fonctions critiques (recherche, création de compte) en haut de liste.
+A faire (Sprint) : les taches que j'ai décidé de traiter pour la session de travail actuelle.
 En cours (In Progress) : la fonctionnalité sur laquelle je travaille activement. Pour garantir la qualité, je m'impose de ne pas avoir plus de deux tâches simultanés ici.
 Terminé (Branche développement) : fonctionnalités coder et tester localement, puis fusionner sur la branche develop.
 Merge (Branche principale) : fonctionnalités valider et fusionner sur la branche main, constituant la version stable et final du site.
@@ -57,13 +56,14 @@ J'ai consulté des documentations techniques anglophones (ex: PHP.net, tutoriels
 Cela m'a permis d'intégrer des solutions modernes et sécurisées conformément aux attentes du client.
 
 Stack technique :
-Front-end
+
+Front-end :
 HTML5
 CSS3 + Bootstrap
-JavaScript (vanilla)
+JavaScript
 
 Back-end :
-PHP (architecture MVC)
+PHP
 PDO pour l’accès aux données
 
 Bases de données :
@@ -71,7 +71,7 @@ MySQL (données relationnelles : utilisateurs, trajets, crédits…)
 MongoDB (statistiques, logs, données analytiques)
 
 Déploiement :
-Application : Fly.io
+Application : Alwaysdata
 Base NoSQL : MongoDB Atlas
 
 Fonctionnalités principales :
@@ -152,6 +152,36 @@ Pour le pilotage de l'entreprise, Ecoride utilise des technologies modernes d'é
 API interne & JSON : l'administrateur consulte des statistiques générer en JSON. Ce format est léger, universel et permet de séparer la logique de calcul (php) de la logique d'affichage.
 L'intégration de librairies comme Chart.js transforme ces données brutes en graphiques lisibles, pour une lecture et compréhension plus simple pour l'administrateur.
 
+
+
+Deploiment de l'appweb :
+
+Préparation de l'environnement Alwaysdata :
+La première étape a consisté à configurer l'espace d'hébergement sur la plateforme Alwaysdata.
+Identifiant de compte : ecoride-mat.
+Configuration du site : création d'une entrée dans l'onglet Web, Sites avec le type d'application php
+Répertoire racine : le serveur a été configuré pour pointer vers le dossier /home/ecoride-mat/www/ afin de servir les fichiers publics
+
+Transfert des fichiers via FTP :
+Pour transférer les fichiers du projet de l'ordinateur local vers le serveur distant, nous avons utilisé le client Filezilla
+Connexion : utilisation de l'hôte ftp-ecoride-mat.alwaysdata.net avec l'utilisateur ecoride-mat
+Organisation des fichiers : les fichiers ont été déposés directement dans le répertoire www/
+Point d'entrée : le fichier index.php a été placé à la racine du dossier www/ pour éviter les erreurs de type 403 Forbidden.
+
+
+Déploiement de la Base de Données :
+La base de données MySQL a été configurée.
+Importation SQL : utilisation de l'interface phpMyAdmin d'Alwaysdata pour importer le script SQL situé dans le dossier /sql/ du projet
+Création des tables : cette étape a permis de générer la structure nécessaire au fonctionnement des formulaires (utilisateurs, trajets, etc...).
+
+Configuration de la connexion PHP (db_connect.php) :
+L'étape finale a été de lier le code php à la base de données distante.
+Hôte : remplacement de localhost par mysql-ecoride-mat.alwaysdata.net
+Identifiants : mise à jour du nom de la base de données (ecoride-mat_db) et du mot de passe utilisateur spécifique à MySQL.
+
+Tests et Validation :
+Validation du rendu : le site est désormais accessible publiquement via l'URL https://ecoride-mat.alwaysdata.net.
+
 Livrables :
 
 Dépôt GitHub public
@@ -161,10 +191,14 @@ Documentation technique
 Manuel utilisateur
 Charte graphique
 
-
+Lien du gestion de projet : https://trello.com/invite/b/696e073f3b1e1ae83615e77b/ATTIacdaead3476a15092da66e4df2762b602418D8DB/gestion-de-projet
 Lien deployer : https://ecoride-mat.alwaysdata.net
 Lien du dépot github : https://github.com/Nidor93/Projet-Ecoride.git
-Lien anglophone : https://youtu.be/aUW5GAFhu6s?si=lc3GcGBGrVO87Scg
+Lien anglophone : https://write.corbpie.com/converting-minutes-to-hours-and-minutes-with-php/
+
+Utilisateur mail et mot de passe : test@mail.com azertyuiop/1
+Admin mail et mot de passe : admin@mail.com  Azertyuiop/1
+Employe mail et mot de passe : employe@mail.com  Azertyuiop/1
 
 Projet réalisé par : Ferré Mathis
 
