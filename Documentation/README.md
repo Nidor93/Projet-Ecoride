@@ -1,3 +1,19 @@
+Manuel d'utilisation en local :
+Cloner le dépôt GitHub
+Verifier si php est installer sur le systeme
+Ouvrir le dossier dans Vs code
+Importer la base de données ecoride_db.sql dans votre BDD
+Lancer le serveur local (Apache / PHP) avec XAMPP
+Vérifier la connexion à MongoDB
+Lancer le serveur grace à l'extension PHP server project sur Vs code (clic droit sur Index.php)
+
+Utilisateur mail et mot de passe : test@mail.com azertyuiop/1
+Admin mail et mot de passe : admin@mail.com  Azertyuiop/1
+Employe mail et mot de passe : employe@mail.com  Azertyuiop/1
+
+
+
+
 Résumé du projet :
 
 EcoRide est une startup de covoiturage écologique permettant de mettre en relation des conducteurs et des passagers pour des trajets en voiture, avec une mise en avant des véhicules électriques.
@@ -89,19 +105,6 @@ Requêtes préparées (PDO)
 Gestion des sessions
 Contrôle des accès par rôles
 Validation des données côté serveur
-
-Manuel d'utilisation en local :
-Cloner le dépôt GitHub
-Verifier si php est installer sur le systeme
-Ouvrir le dossier dans Vs code
-Importer la base de données ecoride_db.sql dans votre BDD
-Lancer le serveur local (Apache / PHP) avec XAMPP
-Vérifier la connexion à MongoDB
-Lancer le serveur grace à l'extension PHP server project sur Vs code (clic droit sur Index.php)
-
-Utilisateur mail et mot de passe : test@mail.com azertyuiop/1
-Admin mail et mot de passe : admin@mail.com  Azertyuiop/1
-Employe mail et mot de passe : employe@mail.com  Azertyuiop/1
 
 
 
