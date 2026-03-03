@@ -14,6 +14,16 @@ Employe mail et mot de passe : employe@mail.com  Azertyuiop/1
 
 
 
+Lien du gestion de projet : https://trello.com/invite/b/696e073f3b1e1ae83615e77b/ATTIacdaead3476a15092da66e4df2762b602418D8DB/gestion-de-projet
+Lien deployer : https://ecoride-mat.alwaysdata.net
+Lien du dépot github : https://github.com/Nidor93/Projet-Ecoride.git
+Lien anglophone : https://write.corbpie.com/converting-minutes-to-hours-and-minutes-with-php/
+
+Utilisateur mail et mot de passe : test@mail.com azertyuiop/1
+Admin mail et mot de passe : admin@mail.com  Azertyuiop/1
+Employe mail et mot de passe : employe@mail.com  Azertyuiop/1
+
+
 Résumé du projet :
 
 EcoRide est une startup de covoiturage écologique permettant de mettre en relation des conducteurs et des passagers pour des trajets en voiture, avec une mise en avant des véhicules électriques.
@@ -194,14 +204,6 @@ Documentation technique
 Manuel utilisateur
 Charte graphique
 
-Lien du gestion de projet : https://trello.com/invite/b/696e073f3b1e1ae83615e77b/ATTIacdaead3476a15092da66e4df2762b602418D8DB/gestion-de-projet
-Lien deployer : https://ecoride-mat.alwaysdata.net
-Lien du dépot github : https://github.com/Nidor93/Projet-Ecoride.git
-Lien anglophone : https://write.corbpie.com/converting-minutes-to-hours-and-minutes-with-php/
-
-Utilisateur mail et mot de passe : test@mail.com azertyuiop/1
-Admin mail et mot de passe : admin@mail.com  Azertyuiop/1
-Employe mail et mot de passe : employe@mail.com  Azertyuiop/1
 
 Projet réalisé par : Ferré Mathis
 

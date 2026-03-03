@@ -169,7 +169,7 @@ $dernier_avis = $stmt_last_avis->fetch();
                             } elseif ($t['sexe'] == 'H') {
                                 $default_img = 'ProfilM.png';
                             } else {
-                                $default_img = 'Voiture Ecoride.png';
+                                $default_img = 'VoitureEcoride.png';
                             }
 
                             if (!empty($t['photo_profil']) && file_exists("Image/" . $t['photo_profil'])) {

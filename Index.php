@@ -65,7 +65,7 @@ $nbEco = $queryEco->fetchColumn();
 <section class="container2">
     <div class="row text-center">
         <div class="col-md-4">
-            <div class="eco-icon"><img src="./Image/Voiture EcoRide.png" alt="Voiture EcoRide" class ="Image"></div>
+            <div class="eco-icon"><img src="./Image/VoitureEcoRide.png" alt="Voiture EcoRide" class ="Image"></div>
             <h4 class="mt-3">Écologique</h4>
             <p>Prioriter aux trajets en voiture électrique et responsable.</p>
         </div>

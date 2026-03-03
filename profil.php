@@ -131,7 +131,7 @@ $mes_participations = $stmt_mes_reservations->fetchAll();
                             } elseif ($user['sexe'] == 'H') {
                                 $default_image = 'ProfilM.png';
                             } else {
-                                $default_image = 'Voiture Ecoride.png';
+                                $default_image = 'VoitureEcoride.png';
                             }
 
                             if (!empty($user['photo_profil']) && file_exists("Image/" . $user['photo_profil'])) {

@@ -155,7 +155,7 @@ $trajets = $stmt->fetchAll();
                     $end = new DateTime($t['heure_arrivee']);
                     $duree = $start->diff($end)->format('%h h %i min');
 
-                    $default = ($t['sexe'] == 'F') ? 'ProfilF.png' : (($t['sexe'] == 'H') ? 'ProfilM.png' : 'Voiture Ecoride.png');
+                    $default = ($t['sexe'] == 'F') ? 'ProfilF.png' : (($t['sexe'] == 'H') ? 'ProfilM.png' : 'VoitureEcoride.png');
                     $img = (!empty($t['photo_profil']) && file_exists("Image/" . $t['photo_profil'])) ? "Image/" . $t['photo_profil'] : "Image/" . $default;
                 ?>
                 <div class="ride-card card p-3 shadow-sm mb-3 border-0">
