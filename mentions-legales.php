@@ -1,14 +1,7 @@
 <?php
 session_start();
 ?>
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>EcoRide - Mentions Légales</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="style.css" rel="stylesheet">
+<?php include('components/header.php') ?>
     <style>
         body { background-color: #f8f9fa; }
         .legal-box {
@@ -22,31 +15,9 @@ session_start();
         h2 { color: #198754; font-size: 1.5rem; margin-top: 25px; border-bottom: 2px solid #e6f4ea; padding-bottom: 10px; }
         p, li { color: #555; line-height: 1.6; }
     </style>
-</head>
 <body class="d-flex flex-column min-vh-100">
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-success">
-    <div class="container">
-        <a class="navbar-brand fw-bold" href="index.php">EcoRide</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menu">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="menu">
-            <ul class="navbar-nav ms-auto">
-               <li class="nav-item"><a class="nav-link" href="index.php">Accueil</a></li>
-               <li class="nav-item"><a class="nav-link" href="recherche.php">Accès aux Covoiturages</a></li>
-            <?php if (isset($_SESSION['utilisateur_id'])): ?>
-               <li class="nav-item"><a class="nav-link" href="profil.php">Mon Profil</a></li>
-               <li class="nav-item"><a class="nav-link text-warning" href="deconnexion.php">Déconnexion</a></li>
-            <?php else: ?>
-               <li class="nav-item"><a class="nav-link active fw-bold" href="connexion.php">Connexion</a></li>
-               <li class="nav-item"><a class="nav-link" href="inscription.php">Inscription</a></li>
-            <?php endif; ?>
-               <li class="nav-item"><a class="nav-link" href="contact.php">Contact</a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<?php include('components/nav.php') ?>
 
 <main class="main-content container">
     <div class="legal-box">
@@ -94,12 +65,7 @@ session_start();
     </div>
 </main>
 
-<footer class="bg-success text-white text-center py-3 mt-auto">
-    <div class="container">
-        <p class="mb-0 small">&copy; <?php echo date('Y'); ?> EcoRide - Tous droits réservés</p>
-    </div>
-</footer>
+<?php include("components/footer.html"); ?>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

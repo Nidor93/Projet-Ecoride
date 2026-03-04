@@ -79,35 +79,11 @@ $stmt_mes_reservations = $pdo->prepare("
 $stmt_mes_reservations->execute([$user_id]);
 $mes_participations = $stmt_mes_reservations->fetchAll();
 ?>
+<?php include('components/header.php') ?>
 
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>EcoRide - Mon Profil</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="style.css" rel="stylesheet">
-</head>
 <body class="d-flex flex-column min-vh-100 bg-light">
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-success shadow-sm">
-    <div class="container">
-        <a class="navbar-brand fw-bold" href="index.php">EcoRide</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="index.php">Accueil</a></li>
-                <li class="nav-item"><a class="nav-link" href="recherche.php">Accès aux Covoiturages</a></li>
-                <li class="nav-item"><a class="nav-link active fw-bold" href="profil.php">Mon Profil</a></li>
-                <li class="nav-item"><a class="nav-link text-warning" href="deconnexion.php">Déconnexion</a></li>
-                <li class="nav-item"><a class="nav-link" href="contact.php">Contact</a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<?php include('components/nav.php') ?>
 
 <div class="main-content container my-5">
     
@@ -429,12 +405,7 @@ $mes_participations = $stmt_mes_reservations->fetchAll();
     </div>
 </div>
 
-<footer class="bg-success text-white text-center py-3 mt-auto">
-    <p class="mb-0">contact@ecoride.fr</p>
-    <a href="mentions-legales.php" class="text-white">Mentions légales</a>
-</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<?php include("components/footer.html"); ?>
 
 </body>
 </html>

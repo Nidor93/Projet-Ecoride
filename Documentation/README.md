@@ -1,11 +1,9 @@
-Manuel d'utilisation en local :
+Manuel d'utilisation en local (Docker):
+Prérequis avoir Docker Desktop installé et lancé sur votre machine.
 Cloner le dépôt GitHub
-Verifier si php est installer sur le systeme
 Ouvrir le dossier dans Vs code
-Importer la base de données ecoride_db.sql dans votre BDD
-Lancer le serveur local (Apache / PHP) avec XAMPP
-Vérifier la connexion à MongoDB
-Lancer le serveur grace à l'extension PHP server project sur Vs code (clic droit sur Index.php)
+Ouvrez un terminal dans le dossier du projet et tapez : docker compose up --build
+Une fois que les conteneurs sont en run, ouvrez votre navigateur sur : http://localhost:8080
 
 Utilisateur mail et mot de passe : test@mail.com azertyuiop/1
 Admin mail et mot de passe : admin@mail.com  Azertyuiop/1

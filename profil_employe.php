@@ -45,15 +45,8 @@ $stmt_incidents = $pdo->prepare("
 $stmt_incidents->execute();
 $incidents = $stmt_incidents->fetchAll();
 ?>
+<?php include('components/header.php') ?>
 
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Espace Employé - Modération</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
 <body class="d-flex flex-column min-vh-100 bg-light">
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-success shadow-sm">

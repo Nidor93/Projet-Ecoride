@@ -45,37 +45,11 @@ $stmt_last_avis = $pdo->prepare("
 $stmt_last_avis->execute([$t['chauffeur_id']]);
 $dernier_avis = $stmt_last_avis->fetch();
 ?>
+<?php include('components/header.php') ?>
 
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>EcoRide - Détails du voyage</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="style.css" rel="stylesheet">
-</head>
 <body class="d-flex flex-column min-vh-100 bg-light">
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-success shadow-sm">
-    <div class="container">
-        <a class="navbar-brand fw-bold" href="index.php">EcoRide</a>
-        <div class="collapse navbar-collapse">
-            <ul class="navbar-nav ms-auto">
-               <li class="nav-item"><a class="nav-link" href="index.php">Accueil</a></li>
-               <li class="nav-item"><a class="nav-link active fw-bold" href="recherche.php">Accès aux Covoiturages</a></li>
-            <?php if (isset($_SESSION['utilisateur_id'])): ?>
-                <li class="nav-item"><a class="nav-link" href="profil.php">Mon Profil</a></li>
-                <li class="nav-item"><a class="nav-link text-warning" href="deconnexion.php">Déconnexion</a></li>
-            <?php else: ?>
-                <li class="nav-item"><a class="nav-link" href="connexion.php">Connexion</a></li>
-                <li class="nav-item"><a class="nav-link" href="inscription.php">Inscription</a></li>
-            <?php endif; ?>
-                <li class="nav-item"><a class="nav-link" href="contact.php">Contact</a></li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<?php include('components/nav.php') ?>
 
 <div class="container my-5 flex-grow-1">
     <div class="mb-4">
@@ -265,12 +239,8 @@ $dernier_avis = $stmt_last_avis->fetch();
         </div>  
     </div>
 </div>
-<footer class="bg-success text-white text-center py-3 mt-auto shadow-lg">
-    <p class="mb-1">contact@ecoride.fr</p>
-    <a href="mentions-legales.php" class="text-white text-decoration-underline">Mentions légales</a>
-</footer>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<?php include("components/footer.html"); ?>
 
 </body>
 </html>
