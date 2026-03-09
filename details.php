@@ -243,4 +243,3 @@ $dernier_avis = $stmt_last_avis->fetch();
 <?php include("components/footer.html"); ?>
 
 </body>
-</html>

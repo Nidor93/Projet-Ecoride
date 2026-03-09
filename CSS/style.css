@@ -14,7 +14,7 @@ footer {
 }
 
 .cgu-header {
-    background: linear-gradient(rgba(0, 100, 0, 0.7), rgba(0, 100, 0, 0.7)), url("./Image/Route.jpg");
+    background: linear-gradient(rgba(0, 100, 0, 0.7), rgba(0, 100, 0, 0.7)), url("../Image/Route.jpg");
     background-size: cover;
     background-position: center;
     color: white;
@@ -42,7 +42,7 @@ h2 {
 }
 
 .login-background {
-    background: linear-gradient(rgba(0, 100, 0, 0.6), rgba(0, 100, 0, 0.6)), url("./Image/Route.jpg");
+    background: linear-gradient(rgba(0, 100, 0, 0.6), rgba(0, 100, 0, 0.6)), url("../Image/Route.jpg");
     background-size: cover;
     background-position: center;
     flex: 1;
@@ -81,7 +81,7 @@ h2 {
 }
 
 .hero {
-    background: linear-gradient(rgba(0, 100, 0, 0.6), rgba(0, 100, 0, 0.6)), url("./Image/Route.jpg");
+    background: linear-gradient(rgba(0, 100, 0, 0.6), rgba(0, 100, 0, 0.6)), url("../Image/Route.jpg");
     background-size: cover;
     background-position: center;
     color: white;
@@ -150,7 +150,7 @@ html, body {
 }
 
 .register-background {
-    background: linear-gradient(rgba(0, 100, 0, 0.6), rgba(0, 100, 0, 0.6)), url("./Image/Route.jpg");
+    background: linear-gradient(rgba(0, 100, 0, 0.6), rgba(0, 100, 0, 0.6)), url("../Image/Route.jpg");
     background-size: cover;
     background-position: center;
     flex: 1;

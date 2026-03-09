@@ -18,54 +18,9 @@ session_start();
 <body class="d-flex flex-column min-vh-100">
 
 <?php include('components/nav.php') ?>
+<?php include("components/mentions_legales.html"); ?>
 
-<main class="main-content container">
-    <div class="legal-box">
-        <h1 class="text-center fw-bold mb-4 text-success">Mentions Légales</h1>
-        <p class="text-center text-muted">En vigueur au 1er Janvier <?php echo date('Y'); ?></p>
-
-        <section>
-            <h2>1. Éditeur du site</h2>
-            <p>Le site <strong>EcoRide</strong> est édité par la société EcoRide SAS, au capital de 10 000 euros, immatriculée au RCS de Paris sous le numéro 123 456 789.</p>
-            <ul>
-                <li><strong>Siège social :</strong> 12 rue de l'Écologie, 75000 Paris</li>
-                <li><strong>Directeur de la publication :</strong> José (Fondateur)</li>
-                <li><strong>Contact :</strong> contact@ecoride.fr | 01 23 45 67 89</li>
-            </ul>
-        </section>
-
-        <section>
-            <h2>2. Hébergement</h2>
-            <p>Le site est hébergé par la société <strong>EcoCloud Hosting</strong>.</p>
-            <ul>
-                <li><strong>Adresse :</strong> 45 Avenue du Numérique, 69000 Lyon</li>
-                <li><strong>Site web :</strong> www.ecocloud.fr</li>
-            </ul>
-        </section>
-
-        <section>
-            <h2>3. Propriété intellectuelle</h2>
-            <p>L'ensemble de ce site relève de la législation française et internationale sur le droit d'auteur et la propriété intellectuelle. Tous les droits de reproduction sont réservés, y compris pour les documents téléchargeables et les représentations iconographiques et photographiques.</p>
-        </section>
-
-        <section>
-            <h2>4. Protection des données (RGPD)</h2>
-            <p>Conformément au Règlement Général sur la Protection des Données (RGPD), vous disposez d'un droit d'accès, de rectification et de suppression des données vous concernant. Vous pouvez exercer ce droit en envoyant un e-mail à : <strong>dpo@ecoride.fr</strong>.</p>
-            <p>Les données collectées (nom, prénom, email, plaque d'immatriculation) sont nécessaires au bon fonctionnement du service de covoiturage et à la gestion des crédits.</p>
-        </section>
-
-        <section>
-            <h2>5. Cookies</h2>
-            <p>Le site utilise des cookies de session pour permettre la connexion à votre espace utilisateur et faciliter la navigation. Ces cookies ne sont pas utilisés à des fins publicitaires.</p>
-        </section>
-
-        <div class="text-center mt-5">
-            <a href="index.php" class="btn btn-outline-success px-4">Retour à l'accueil</a>
-        </div>
-    </div>
-</main>
 
 <?php include("components/footer.html"); ?>
 
 </body>
-</html>

@@ -56,23 +56,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?php echo $erreur; ?>
                 </div>
             <?php endif; ?>
+            <?php include("form/connexion_form.html"); ?>
 
-            <form action="connexion.php" method="POST">
-                <div class="mb-3">
-                    <label for="email" class="form-label fw-bold">Adresse Email</label>
-                    <input type="email" name="email" class="form-control" id="email" placeholder="nom@exemple.com" required>
-                </div>
-
-                <div class="mb-3">
-                    <label for="password" class="form-label fw-bold">Mot de passe</label>
-                    <input type="password" name="password" class="form-control" id="password" placeholder="Votre mot de passe" required>
-                </div>
-
-
-                <div class="d-grid gap-2">
-                    <button type="submit" class="btn btn-ecoride fw-bold py-2">Se connecter</button>
-                </div>
-            </form>
 
             <div class="text-center mt-4 border-top pt-3">
                 <p class="mb-1"><a href="new-password.php" class="text-success text-decoration-none small">Mot de passe oublié ?</a></p>
@@ -85,4 +70,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <?php include("components/footer.html"); ?>
 
 </body>
-</html>

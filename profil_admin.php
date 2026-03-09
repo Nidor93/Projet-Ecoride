@@ -88,29 +88,8 @@ $jsonEco = json_encode($statsEco);
                     ?>
                 </div>
             <?php endif; ?>
-            <form action="creer_employe.php" method="POST">
-                <div class="row g-3">
-                    <div class="col-md-3">
-                        <label class="form-label fw-bold">Nom</label>
-                        <input type="text" name="nom" class="form-control" required>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label fw-bold">Prénom</label>
-                        <input type="text" name="prenom" class="form-control" required>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label fw-bold">Email</label>
-                        <input type="email" name="email" class="form-control" placeholder="nomprenom@mail.com" required>
-                    </div>
-                    <div class="col-md-3">
-                        <label class="form-label fw-bold">Mot de passe</label>
-                        <input type="password" name="password" class="form-control" id="password" required minlength="12" pattern=".*[^\w\s].*" placeholder="Minimum 12 caractères">
-                    </div>
-                    <div class="col-12 mt-6">
-                        <button type="submit" class="btn btn-success">Créer l'employé</button>
-                    </div>
-                </div>
-            </form>
+            <?php include("form/creer_employe_form.html"); ?>
+            
         </div>
     </div>
     <div class="card border-0 shadow-sm p-4 mb-2">
@@ -201,4 +180,3 @@ $jsonEco = json_encode($statsEco);
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
-</html>

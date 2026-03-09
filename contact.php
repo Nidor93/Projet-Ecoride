@@ -67,4 +67,3 @@ session_start();
 <?php include("components/footer.html"); ?>
 
 </body>
-</html>

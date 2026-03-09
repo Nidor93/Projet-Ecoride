@@ -99,34 +99,8 @@ $mes_participations = $stmt_mes_reservations->fetchAll();
         <div class="col-lg-4">
             <div class="card border-0 shadow-sm text-center p-4 mb-4">
                 <div class="profile-pic-wrapper text-center">
-                    <form id="form-photo" action="maj_photo.php" method="POST" enctype="multipart/form-data">
-                        <label for="upload-photo" class="position-relative d-inline-block" style="cursor: pointer;">
-                            <?php 
-                            if ($user['sexe'] == 'F') {
-                                $default_image = 'ProfilF.png';
-                            } elseif ($user['sexe'] == 'H') {
-                                $default_image = 'ProfilM.png';
-                            } else {
-                                $default_image = 'VoitureEcoride.png';
-                            }
-
-                            if (!empty($user['photo_profil']) && file_exists("Image/" . $user['photo_profil'])) {
-                                $image_path = "Image/" . $user['photo_profil'];
-                            } else {
-                                $image_path = "Image/" . $default_image;
-                            }
-                            ?>
-                            <img src="<?php echo $image_path; ?>" 
-                                class="rounded-circle mb-3 border p-1 mx-auto profile-img" 
-                                width="100" height="100" 
-                                style="object-fit: cover;"
-                                alt="Photo de profil">
-                            <div class="overlay rounded-circle d-flex align-items-center justify-content-center">
-                                <span class="text-white small fw-bold">Changer ?</span>
-                            </div>
-                            <input type="file" name="nouvelle_photo" id="upload-photo" class="d-none" accept="image/*" onchange="document.getElementById('form-photo').submit();">
-                        </label>
-                    </form>
+                    <?php include("form/maj_photo_form.php"); ?>
+                    
                 </div>
                 <h3 class="fw-bold mb-0"><?php echo htmlspecialchars($user['prenom'] . ' ' . $user['nom']); ?></h3>
                 <div class="badge bg-success my-3 p-2"><?php echo $user['credit'] ?? 0; ?> Crédits</div>
@@ -136,58 +110,8 @@ $mes_participations = $stmt_mes_reservations->fetchAll();
             <h3 class="fw-bold text-success mb-4">Proposer un nouveau trajet</h3>
 
         <?php if ($a_une_voiture): ?>
-        <form action="creer_trajet.php" method="POST">
-            <div class="row g-3">
-                <div class="col-md-6">
-                    <label class="form-label fw-bold">Ville de départ</label>
-                    <input type="text" name="ville_depart" class="form-control" placeholder="Ex: Paris" required>
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label fw-bold">Ville d'arrivée</label>
-                    <input type="text" name="ville_arrivee" class="form-control" placeholder="Ex: Lyon" required>
-                </div>
-
-                <div class="col-md-4">
-                    <label class="form-label fw-bold">Date du voyage</label>
-                    <input type="date" name="date_depart" class="form-control" required>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label fw-bold">Heure de départ</label>
-                    <input type="time" name="heure_depart" class="form-control" required>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label fw-bold">Heure d'arrivée</label>
-                    <input type="time" name="heure_arrivee" class="form-control" required>
-                </div>
-
-                <div class="col-md-6">
-                    <label class="form-label fw-bold">Prix par passager</label>
-                    <input type="number" name="prix" class="form-control" step="0.50" placeholder="Ex: 25" required>
-                    <div class="form-text text-danger">2 crédits seront prélevés par la plateforme sur ce prix.</div>
-                </div>
-                <div class="col-md-6">
-                    <label class="form-label fw-bold">Nombre de places</label>
-                    <input type="number" name="nb_place" class="form-control" min="1" max="8" required>
-
-                </div>
-
-                <div class="col-12">
-                    <label class="form-label fw-bold">Choisir votre véhicule</label>
-                    <select name="voiture_id" class="form-select" required>
-                        <option value="">-- Sélectionnez un véhicule --</option>
-                        <?php foreach ($mes_voitures as $v): ?>
-                            <option value="<?php echo $v['voiture_id']; ?>">
-                                <?php echo htmlspecialchars($v['modele'] . " (" . $v['immatriculation'] . ")"); ?>
-                            </option>
-                        <?php endforeach; ?>
-                    </select>
-                </div>
-
-                <div class="col-12 mt-4">
-                    <button type="submit" class="btn btn-success btn-lg w-100 fw-bold">Publier mon trajet</button>
-                </div>
-            </div>
-        </form>
+            <?php include("form/creer_trajet_form.php"); ?>
+        
                 <div class="mt-2 text-end">
                     <button class="btn btn-sm btn-success" data-bs-toggle="collapse" data-bs-target="#collapseVoiture">Ajoutez un nouveau véhicule</button>
                 </div>
@@ -354,50 +278,8 @@ $mes_participations = $stmt_mes_reservations->fetchAll();
             <div class="collapse" id="collapseVoiture">
                 <div class="card card-body border-0 shadow-sm mb-4">
                     <h5 class="fw-bold text-success mb-3">Enregistrer un nouveau véhicule</h5>
-                    <form method="POST">
-                        <div class="row g-3">
-                            <div class="col-md-6">
-                                <label class="form-label small fw-bold">Modèle</label>
-                                <input type="text" name="modele" class="form-control" placeholder="Tesla Model 3" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label small fw-bold">Immatriculation</label>
-                                <input type="text" name="immatriculation" class="form-control" placeholder="AB-123-CD" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label small fw-bold">Date de 1ère immat.</label>
-                                <input type="date" name="date_immat" class="form-control" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label class="form-label small fw-bold">Places</label>
-                                <input type="number" name="places" class="form-control" min="1" max="8" value="3" required>
-                            </div>
-        
-                            <div class="col-12 border-top pt-2">
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="pref_fumeur" id="isFumeur">
-                                    <label class="form-check-label" for="isFumeur">Fumeur OK</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="pref_animal" id="isAnimal">
-                                    <label class="form-check-label" for="isAnimal">Animaux OK</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="est_electrique" id="isElec">
-                                    <label class="form-check-label text-info fw-bold" for="isElec">Électrique</label>
-                                </div>
-                            </div>
-
-                            <div class="col-12">
-                                <label class="form-label small fw-bold">Autres préférences</label>
-                                <textarea name="categorie" class="form-control" rows="3" placeholder="Ex: J'aime écouter de la musique rock, j'ai souvent des bagages encombrants..."></textarea>
-                            </div>
-
-                            <div class="col-12">
-                                <button type="submit" name="ajouter_auto" class="btn btn-success w-100 fw-bold">Enregistrer le véhicule</button>
-                            </div>
-                        </div>
-                    </form>
+                    <?php include("form/nouveau_vehicule_form.html"); ?>
+                    
                 </div>
             </div>
             
@@ -408,4 +290,3 @@ $mes_participations = $stmt_mes_reservations->fetchAll();
 <?php include("components/footer.html"); ?>
 
 </body>
-</html>
