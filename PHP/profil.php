@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'db_connect.php';
+require_once '../db_connect.php';
 
 if (!isset($_SESSION['utilisateur_id']) || $_SESSION['role'] !== 'utilisateur') {
     header('Location: connexion.php');
@@ -79,11 +79,11 @@ $stmt_mes_reservations = $pdo->prepare("
 $stmt_mes_reservations->execute([$user_id]);
 $mes_participations = $stmt_mes_reservations->fetchAll();
 ?>
-<?php include('components/header.php') ?>
+<?php include('../components/header.php') ?>
 
 <body class="d-flex flex-column min-vh-100 bg-light">
 
-<?php include('components/nav.php') ?>
+<?php include('../components/nav.php') ?>
 
 <div class="main-content container my-5">
     
@@ -99,7 +99,7 @@ $mes_participations = $stmt_mes_reservations->fetchAll();
         <div class="col-lg-4">
             <div class="card border-0 shadow-sm text-center p-4 mb-4">
                 <div class="profile-pic-wrapper text-center">
-                    <?php include("form/maj_photo_form.php"); ?>
+                    <?php include("../form/maj_photo_form.php"); ?>
                     
                 </div>
                 <h3 class="fw-bold mb-0"><?php echo htmlspecialchars($user['prenom'] . ' ' . $user['nom']); ?></h3>
@@ -110,7 +110,7 @@ $mes_participations = $stmt_mes_reservations->fetchAll();
             <h3 class="fw-bold text-success mb-4">Proposer un nouveau trajet</h3>
 
         <?php if ($a_une_voiture): ?>
-            <?php include("form/creer_trajet_form.php"); ?>
+            <?php include("../form/creer_trajet_form.php"); ?>
         
                 <div class="mt-2 text-end">
                     <button class="btn btn-sm btn-success" data-bs-toggle="collapse" data-bs-target="#collapseVoiture">Ajoutez un nouveau véhicule</button>
@@ -130,7 +130,7 @@ $mes_participations = $stmt_mes_reservations->fetchAll();
                 <h4 class="fw-bold text-success mb-3 border-bottom pb-2">Mes Informations</h4>
                 <div class="row">
                     <div class="col-6 mb-2"><span class="text-muted small">Email :</span><br><strong><?php echo htmlspecialchars($user['email']); ?></strong></div>
-                    <div class="col-6 mb-2"><span class="text-muted small">Téléphone :</span><br><strong><?php echo htmlspecialchars($user['telephone'] ?? 'Non renseigné'); ?></strong></div>
+                    <div class="col-6 mb-2"><span class="text-muted small">Téléphone : </span><br><strong>0<?php echo htmlspecialchars($user['telephone'] ?? 'Non renseigné'); ?></strong></div>
                 </div>
             </div>
         <?php if ($a_une_voiture): ?>
@@ -278,7 +278,7 @@ $mes_participations = $stmt_mes_reservations->fetchAll();
             <div class="collapse" id="collapseVoiture">
                 <div class="card card-body border-0 shadow-sm mb-4">
                     <h5 class="fw-bold text-success mb-3">Enregistrer un nouveau véhicule</h5>
-                    <?php include("form/nouveau_vehicule_form.html"); ?>
+                    <?php include("../form/nouveau_vehicule_form.html"); ?>
                     
                 </div>
             </div>
@@ -287,6 +287,6 @@ $mes_participations = $stmt_mes_reservations->fetchAll();
     </div>
 </div>
 
-<?php include("components/footer.html"); ?>
+<?php include("../components/footer.html"); ?>
 
 </body>

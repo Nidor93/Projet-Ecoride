@@ -1,4 +1,4 @@
-<form method="GET" action="recherche.php" class="d-flex flex-column">
+<form method="GET" action="../PHP/recherche.php" class="d-flex flex-column">
                     <input type="hidden" name="depart" value="<?php echo htmlspecialchars($_GET['depart'] ?? ''); ?>">
                     <input type="hidden" name="arrivee" value="<?php echo htmlspecialchars($_GET['arrivee'] ?? ''); ?>">
 
@@ -35,5 +35,5 @@
                     </div>
 
                     <button type="submit" class="btn btn-success fw-bold w-100 mb-2">Appliquer</button>
-                    <a href="recherche.php?depart=<?php echo urlencode($_GET['depart'] ?? ''); ?>&arrivee=<?php echo urlencode($_GET['arrivee'] ?? ''); ?>" class="btn btn-link btn-sm text-secondary text-decoration-none text-center">Réinitialiser</a>
+                    <a href="../PHP/recherche.php?depart=<?php echo urlencode($_GET['depart'] ?? ''); ?>&arrivee=<?php echo urlencode($_GET['arrivee'] ?? ''); ?>" class="btn btn-link btn-sm text-secondary text-decoration-none text-center">Réinitialiser</a>
 </form>

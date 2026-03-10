@@ -1,11 +1,11 @@
 <?php
 session_start();
 ?>
-<?php include('components/header.php') ?>
+<?php include('../components/header.php') ?>
 
 <body class="d-flex flex-column min-vh-100">
 
-<?php include('components/nav.php') ?>
+<?php include('../components/nav.php') ?>
 
 <header class="bg-light py-5 text-center border-bottom">
     <div class="container">
@@ -64,6 +64,6 @@ session_start();
     </div>
 </main>
 
-<?php include("components/footer.html"); ?>
+<?php include("../components/footer.html"); ?>
 
 </body>

@@ -14,10 +14,10 @@ footer {
 }
 
 .cgu-header {
-    background: linear-gradient(rgba(0, 100, 0, 0.7), rgba(0, 100, 0, 0.7)), url("../Image/Route.jpg");
+    background: linear-gradient(hsla(120, 100%, 20%, 0.6), hsla(120, 100%, 20%, 0.7)), url("../Image/Route.jpg");
     background-size: cover;
     background-position: center;
-    color: white;
+    color: rgb(255, 255, 255);
     padding: 60px 0;
     margin-bottom: 40px;
 }
@@ -42,7 +42,7 @@ h2 {
 }
 
 .login-background {
-    background: linear-gradient(rgba(0, 100, 0, 0.6), rgba(0, 100, 0, 0.6)), url("../Image/Route.jpg");
+    background: linear-gradient(hsla(120, 100%, 20%, 0.6), hsla(120, 100%, 20%, 0.7)), url("../Image/Route.jpg");
     background-size: cover;
     background-position: center;
     flex: 1;
@@ -81,7 +81,7 @@ h2 {
 }
 
 .hero {
-    background: linear-gradient(rgba(0, 100, 0, 0.6), rgba(0, 100, 0, 0.6)), url("../Image/Route.jpg");
+    background: linear-gradient(hsla(120, 100%, 20%, 0.6), hsla(120, 100%, 20%, 0.7)), url("../Image/Route.jpg");
     background-size: cover;
     background-position: center;
     color: white;
@@ -93,21 +93,41 @@ h2 {
 }
 
 .container2 {
-    width: 50%;
-    max-width: 800px;
-    margin: auto;
-    padding: 10px;
-    background-color: #f5f5f5c2;
-    border-radius: 25px;
+    width: 100%;
+    max-width: 350px;
+    margin: 50px;
+    padding: 30px;
+    background-color: hsla(120, 100%, 20%, 0.7);
+    border-radius: 20px;
     align-items: center;
+    color: white;
+    box-shadow: 0 5px 15px hsla(105, 100%, 10%, 0.5);
+}
+
+.legal-box {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    margin-top: 30px;
+    margin-bottom: 50px;
+}
+
+.section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 100px;
 }
 
 .Image {
     width: 100%;
-    max-width: 800px;
+    max-width: 300px;
     height: auto;
     display: block;
     margin: 0 auto;
+    border-radius: 10px;
 }
 
 html, body {
@@ -144,7 +164,7 @@ html, body {
 }
 
 .badge-eco {
-    background-color: #e6f4ea;
+    background-color: white;
     color: var(--eco-green);
     border: 1px solid var(--eco-green);
 }
@@ -168,7 +188,7 @@ html, body {
 }
 
 .car-info {
-    background-color: #e6f4ea;
+    background-color: white;
     border-radius: 15px;
     padding: 20px;
 }

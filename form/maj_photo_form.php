@@ -1,18 +1,18 @@
-<form id="form-photo" action="maj_photo.php" method="POST" enctype="multipart/form-data">
+<form id="form-photo" action="../PHP/maj_photo.php" method="POST" enctype="multipart/form-data">
                         <label for="upload-photo" class="position-relative d-inline-block" style="cursor: pointer;">
                             <?php 
                             if ($user['sexe'] == 'F') {
-                                $default_image = 'ProfilF.png';
+                                $default_image = '../Image/ProfilF.png';
                             } elseif ($user['sexe'] == 'H') {
-                                $default_image = 'ProfilM.png';
+                                $default_image = '../Image/ProfilM.png';
                             } else {
-                                $default_image = 'VoitureEcoride.png';
+                                $default_image = '../Image/VoitureEcoride.png';
                             }
 
-                            if (!empty($user['photo_profil']) && file_exists("Image/" . $user['photo_profil'])) {
-                                $image_path = "Image/" . $user['photo_profil'];
+                            if (!empty($user['photo_profil']) && file_exists("../Image/" . $user['photo_profil'])) {
+                                $image_path = "../Image/" . $user['photo_profil'];
                             } else {
-                                $image_path = "Image/" . $default_image;
+                                $image_path = "../Image/" . $default_image;
                             }
                             ?>
                             <img src="<?php echo $image_path; ?>" 

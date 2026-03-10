@@ -2,37 +2,37 @@
 $page = basename($_SERVER['PHP_SELF']); 
 
 switch ($page) {
-    case 'index.php':
+    case '../PHP/index.php':
         $titre = "EcoRide - Covoiturage écologique";
         break;
-    case 'recherche.php':
+    case '../PHP/recherche.php':
         $titre = "EcoRide - Rechercher un trajet";
         break;
-    case 'contact.php':
+    case '../PHP/contact.php':
         $titre = "EcoRide - Contact";
         break;
-    case 'connexion.php':
+    case '../PHP/connexion.php':
         $titre = "EcoRide - Connexion";
         break;
-    case  'details.php':
+    case  '../PHP/details.php':
         $titre = "EcoRide - Détails du voyage";
         break;
-    case 'inscription.php':
+    case '../PHP/inscription.php':
         $titre = "EcoRide - Inscription";
         break;
-    case 'mentions-legales.php':
+    case '../PHP/mentions-legales.php':
         $titre = "EcoRide - Mentions Légales";
         break;
-    case 'new-password.php':
+    case '../PHP/new-password.php':
         $titre = "EcoRide - Récupération de mot de passe";
         break;
-    case 'profil.php':
+    case '../PHP/profil.php':
         $titre = "EcoRide - Mon Profil";
         break;
-    case 'profil_admin.php':
+    case '../PHP/profil_admin.php':
         $titre = "Espace Administrateur - Modération";
         break;
-    case 'profil_employe.php':
+    case '../PHP/profil_employe.php':
         $titre = "Espace Employé - Modération";
         break;
     default:
@@ -47,5 +47,5 @@ switch ($page) {
     <title><?php echo $titre; ?></title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="CSS/style.css" rel="stylesheet">
+    <link href="../CSS/style.css" rel="stylesheet">
 </head>

@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'db_connect.php';
+require_once '../db_connect.php';
 
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'employe') {
     header('Location: connexion.php');
@@ -45,7 +45,7 @@ $stmt_incidents = $pdo->prepare("
 $stmt_incidents->execute();
 $incidents = $stmt_incidents->fetchAll();
 ?>
-<?php include('components/header.php') ?>
+<?php include('../components/header.php') ?>
 
 <body class="d-flex flex-column min-vh-100 bg-light">
 

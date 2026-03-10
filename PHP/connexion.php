@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'db_connect.php';
+require_once '../db_connect.php';
 
 $erreur = "";
 
@@ -37,11 +37,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 ?>
-<?php include('components/header.php') ?>
+<?php include('../components/header.php') ?>
 
 <body class="d-flex flex-column min-vh-100">
 
-<?php include('components/nav.php') ?>
+<?php include('../components/nav.php') ?>
 
 <section class="login-background flex-grow-1 d-flex align-items-center">
     <div class="container">
@@ -56,7 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <?php echo $erreur; ?>
                 </div>
             <?php endif; ?>
-            <?php include("form/connexion_form.html"); ?>
+            <?php include("../form/connexion_form.html"); ?>
 
 
             <div class="text-center mt-4 border-top pt-3">
@@ -67,6 +67,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </div>
 </section>
 
-<?php include("components/footer.html"); ?>
+<?php include("../components/footer.html"); ?>
 
 </body>

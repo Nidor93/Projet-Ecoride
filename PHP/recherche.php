@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'db_connect.php';
+require_once '../db_connect.php';
 
 $duree_heures = !empty($_GET['duree_max_h']) ? floatval($_GET['duree_max_h']) : 999;
 $duree_max_minutes = $duree_heures * 60;
@@ -40,7 +40,7 @@ $stmt->execute([
 
 $trajets = $stmt->fetchAll();
 ?>
-<?php include('components/header.php') ?>
+<?php include('../components/header.php') ?>
     <style>
         .ride-card { transition: transform 0.2s; cursor: pointer; }
         .ride-card:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important; }
@@ -48,14 +48,14 @@ $trajets = $stmt->fetchAll();
     </style>
 <body class="d-flex flex-column min-vh-100 bg-light">
 
-<?php include('components/nav.php') ?>
+<?php include('../components/nav.php') ?>
 
 <div class="container my-5">
     <div class="row">
         <aside class="col-lg-3">
             <div class="card p-4 shadow-sm border-0 sticky-top" style="top: 20px;">
                 <h5 class="fw-bold mb-4"><i class="bi bi-sliders"></i> Filtres</h5>
-                <?php include("form/recherche_form.php"); ?>
+                <?php include("../form/recherche_form.php"); ?>
 
             </div>
         </aside>
@@ -87,8 +87,8 @@ $trajets = $stmt->fetchAll();
                     $end = new DateTime($t['heure_arrivee']);
                     $duree = $start->diff($end)->format('%h h %i min');
 
-                    $default = ($t['sexe'] == 'F') ? 'ProfilF.png' : (($t['sexe'] == 'H') ? 'ProfilM.png' : 'VoitureEcoride.png');
-                    $img = (!empty($t['photo_profil']) && file_exists("Image/" . $t['photo_profil'])) ? "Image/" . $t['photo_profil'] : "Image/" . $default;
+                    $default = ($t['sexe'] == 'F') ? '../Image/ProfilF.png' : (($t['sexe'] == 'H') ? '../Image/ProfilM.png' : '../Image/VoitureEcoride.png');
+                    $img = (!empty($t['photo_profil']) && file_exists("../Image/" . $t['photo_profil'])) ? "../Image/" . $t['photo_profil'] : "../Image/" . $default;
                 ?>
                 <div class="ride-card card p-3 shadow-sm mb-3 border-0">
                     <div class="row align-items-center">
@@ -137,6 +137,6 @@ $trajets = $stmt->fetchAll();
     </div>
 </div>
 
-<?php include("components/footer.html"); ?>
+<?php include("../components/footer.html"); ?>
 
 </body>

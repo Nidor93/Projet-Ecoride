@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json');
-require_once 'db_connect.php';
+require_once '../db_connect.php';
 
 $sql = "SELECT date_depart, COUNT(*) as nb_trajets, SUM(prix) as gains 
         FROM trajet 

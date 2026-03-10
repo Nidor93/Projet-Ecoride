@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'db_connect.php';
+require_once '../db_connect.php';
 
 $id_trajet = isset($_GET['id']) ? intval($_GET['id']) : 0;
 
@@ -8,7 +8,7 @@ if ($id_trajet <= 0) {
     header('Location: recherche.php');
     exit;
 }
-$sql = "SELECT t.*, u.utilisateur_id as chauffeur_id, u.prenom, u.nom, u.sexe, u.photo_profil, v.modele, v.couleur, v.pref_animal, v.pref_fumeur, v.immatriculation, v.est_electrique, v.categorie,
+$sql = "SELECT t.*, u.utilisateur_id as chauffeur_id, u.prenom, u.nom, u.sexe, u.photo_profil, u.telephone, v.modele, v.couleur, v.pref_animal, v.pref_fumeur, v.immatriculation, v.est_electrique, v.categorie,
         (SELECT AVG(note) FROM avis WHERE utilisateur_id = u.utilisateur_id AND est_valide = 1) as note_moyenne,
         (SELECT COUNT(*) FROM avis WHERE utilisateur_id = u.utilisateur_id AND est_valide = 1) as nb_avis
         FROM trajet t
@@ -45,11 +45,11 @@ $stmt_last_avis = $pdo->prepare("
 $stmt_last_avis->execute([$t['chauffeur_id']]);
 $dernier_avis = $stmt_last_avis->fetch();
 ?>
-<?php include('components/header.php') ?>
+<?php include('../components/header.php') ?>
 
 <body class="d-flex flex-column min-vh-100 bg-light">
 
-<?php include('components/nav.php') ?>
+<?php include('../components/nav.php') ?>
 
 <div class="container my-5 flex-grow-1">
     <div class="mb-4">
@@ -139,21 +139,22 @@ $dernier_avis = $stmt_last_avis->fetch();
                 <div class="mb-4">
                     <?php
                             if ($t['sexe'] == 'F') {
-                                $default_img = 'ProfilF.png';
+                                $default_img = '../Image/ProfilF.png';
                             } elseif ($t['sexe'] == 'H') {
-                                $default_img = 'ProfilM.png';
+                                $default_img = '../Image/ProfilM.png';
                             } else {
-                                $default_img = 'VoitureEcoride.png';
+                                $default_img = '../Image/VoitureEcoride.png';
                             }
 
-                            if (!empty($t['photo_profil']) && file_exists("Image/" . $t['photo_profil'])) {
-                                $img_chauffeur = "Image/" . $t['photo_profil'];
+                            if (!empty($t['photo_profil']) && file_exists("../Image/" . $t['photo_profil'])) {
+                                $img_chauffeur = "../Image/" . $t['photo_profil'];
                             } else {
-                                $img_chauffeur = "Image/" . $default_img;
+                                $img_chauffeur = "../Image/" . $default_img;
                             }
                             ?>
-                            <img src="<?php echo $img_chauffeur; ?>" class="rounded-circle" width="100" height="100" style="object-fit: cover;">
+                            <img src="<?php echo $img_chauffeur; ?>" class="rounded-circle" width="100" height="100" alt="Photo de profil" style="object-fit: cover;">
                     <h4 class="fw-bold mb-1"><?php echo htmlspecialchars($t['prenom'] . ' ' . $t['nom']); ?></h4>
+                    <p class="fw-bold mb-1">Téléphone : 0<?php echo $t['telephone']; ?></p>
                     <p class="text-warning mb-0">
                         <?php 
                         $note = $t['note_moyenne'] ? round($t['note_moyenne']) : 0;
@@ -240,6 +241,6 @@ $dernier_avis = $stmt_last_avis->fetch();
     </div>
 </div>
 
-<?php include("components/footer.html"); ?>
+<?php include("../components/footer.html"); ?>
 
 </body>

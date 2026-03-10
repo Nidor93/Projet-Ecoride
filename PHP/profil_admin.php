@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'db_connect.php';
+require_once '../db_connect.php';
 
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     header('Location: connexion.php');
@@ -55,7 +55,7 @@ $jsonTrajets = json_encode($statsTrajets);
 $jsonEco = json_encode($statsEco);
 
 ?>
-<?php include('components/header.php') ?>
+<?php include('../components/header.php') ?>
 
 <body class="d-flex flex-column min-vh-100 bg-light">
 
@@ -88,7 +88,7 @@ $jsonEco = json_encode($statsEco);
                     ?>
                 </div>
             <?php endif; ?>
-            <?php include("form/creer_employe_form.html"); ?>
+            <?php include("../form/creer_employe_form.html"); ?>
             
         </div>
     </div>

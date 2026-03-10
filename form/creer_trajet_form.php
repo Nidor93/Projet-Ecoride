@@ -1,4 +1,4 @@
-<form action="creer_trajet.php" method="POST">
+<form action="../PHP/creer_trajet.php" method="POST">
             <div class="row g-3">
                 <div class="col-md-6">
                     <label class="form-label fw-bold">Ville de départ</label>

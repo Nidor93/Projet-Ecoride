@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'db_connect.php';
+require_once '../db_connect.php';
 
 if (!isset($_SESSION['utilisateur_id'])) {
     header('Location: connexion.php');

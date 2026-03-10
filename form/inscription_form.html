@@ -1,4 +1,4 @@
-<form action="inscription.php" method="POST">
+<form action="../PHP/inscription.php" method="POST">
                 <div class="row">
                     <div class="col-md-6 mb-3">
                         <label for="nom" class="form-label fw-bold">Nom</label>
@@ -19,7 +19,10 @@
                         <option value="Autre">Autre</option>
                     </select>
                 </div>
-
+                <div class="mb-3">
+                    <label for="telephone" class="form-label fw-bold">Numéro de téléphone</label>
+                    <input type="text" required minlength="10" required maxlength="10" name="telephone" class="form-control" id="telephone" placeholder="Votre numéro de téléphone" required>
+                </div>
                 <div class="mb-3">
                     <label for="email" class="form-label fw-bold">Adresse Email</label>
                     <input type="email" name="email" class="form-control" id="email" placeholder="nom@exemple.com" required>

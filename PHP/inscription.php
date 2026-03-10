@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once 'db_connect.php';
+require_once '../db_connect.php';
 
 $message = "";
 $messageClass = "";
@@ -9,6 +9,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $nom = htmlspecialchars($_POST['nom']);
     $prenom = htmlspecialchars($_POST['prenom']);
     $sexe = $_POST['sexe'] ?? '';
+    $telephone = $_POST['telephone'];
     $email = htmlspecialchars($_POST['email']);
     $password = $_POST['password'];
     $confirm_password = $_POST['confirm-password'];
@@ -27,8 +28,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
             try {
-                $sql = "INSERT INTO utilisateur (nom, prenom, sexe, email, password, credit, role) 
-                        VALUES (?, ?, ?, ?, ?, ?, ?)";
+                $sql = "INSERT INTO utilisateur (nom, prenom, sexe, email, password, credit, role, telephone) 
+                        VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
                 $stmt = $pdo->prepare($sql);
                 $stmt->execute([
                     $nom,
@@ -37,7 +38,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     $email,
                     $hashedPassword,
                     20,
-                    'utilisateur'
+                    'utilisateur',
+                    $telephone
                 ]);
                 $message = "Inscription réussie ! Vous avez reçu 20 crédits offerts. <a href='connexion.php'>Connectez-vous ici</a>";
                 $messageClass = "alert-success";
@@ -49,11 +51,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
-<?php include('components/header.php') ?>
+<?php include('../components/header.php') ?>
 
 <body class="d-flex flex-column min-vh-100">
 
-<?php include('components/nav.php') ?>
+<?php include('../components/nav.php') ?>
 
 <section class="register-background py-5">
     <div class="container">
@@ -68,7 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                     <?php echo $message; ?>
                 </div>
             <?php endif; ?>
-            <?php include("form/inscription_form.html"); ?>
+            <?php include("../form/inscription_form.html"); ?>
             
 
             <div class="text-center mt-4">
@@ -78,6 +80,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     </div>
 </section>
 
-<?php include("components/footer.html"); ?>
+<?php include("../components/footer.html"); ?>
 
 </body>
