@@ -2,7 +2,8 @@ body {
     background-color: #f8f9fa;
     display: flex;
     flex-direction: column;
-    min-height: 800px;
+    min-height: 100vh;
+    margin: 0;
 }
 
 footer {
@@ -11,6 +12,7 @@ footer {
     color: white;
     padding: 20px 0;
     width: 100%;
+    flex-shrink: 0;
 }
 
 .cgu-header {
@@ -102,6 +104,8 @@ h2 {
     align-items: center;
     color: white;
     box-shadow: 0 5px 15px hsla(105, 100%, 10%, 0.5);
+    position: relative; 
+    z-index: 1;
 }
 
 .legal-box {
@@ -119,6 +123,10 @@ h2 {
     align-items: center;
     flex-direction: column;
     min-height: 100px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    flex: 1 0 auto;
 }
 
 .Image {
