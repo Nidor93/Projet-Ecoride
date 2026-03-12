@@ -19,7 +19,7 @@ try {
 
     if ($trajet_chauffeur) {
         $stmt_p = $pdo->prepare("
-            SELECT u.utilisateur_id, u.email, t.ville_depart, t.ville_arrivee, t.date_depart 
+            SELECT u.utilisateur_id, u.email, t.ville_depart, t.ville_arrivee, t.date_depart, t.nb_place,
             FROM reservation r
             JOIN utilisateur u ON r.utilisateur_id = u.utilisateur_id
             JOIN trajet t ON r.trajet_id = t.trajet_id
@@ -57,6 +57,8 @@ try {
             $del_res = $pdo->prepare("DELETE FROM reservation WHERE trajet_id = ? AND utilisateur_id = ?");
             $del_res->execute([$id_cible, $user_id]);
 
+            $up_place = $pdo->prepare("UPDATE trajet SET nb_place = nb_place + 1 WHERE trajet_id = ?");
+            $up_place->execute([$id_cible]);
             $up_credit = $pdo->prepare("UPDATE utilisateur SET credit = credit + 2 WHERE utilisateur_id = ?");
             $up_credit->execute([$user_id]);
             

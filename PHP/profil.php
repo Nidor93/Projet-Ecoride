@@ -1,15 +1,47 @@
 <?php
 session_start();
 require_once '../db_connect.php';
+$error_form = null;
+$error_db = null;
 
 if (!isset($_SESSION['utilisateur_id']) || $_SESSION['role'] !== 'utilisateur') {
     header('Location: connexion.php');
     exit;
 }
 
-$user_id = $_SESSION['utilisateur_id'];
+$user_id = $_SESSION['utilisateur_id'] ?? null;
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $email = $_POST['email'];
+    $numero = $_POST['telephone'];
+    $user_id = $_SESSION['utilisateur_id'] ?? null;
+
+    if (!empty($email) && !empty($numero)) {
+        try { 
+            $sql_ins = "UPDATE utilisateur 
+                        SET email = ?, telephone = ? 
+                        WHERE utilisateur_id = ?";
+
+            $stmt_ins = $pdo->prepare($sql_ins);
+            $stmt_ins->execute([
+                $email, 
+                $numero, 
+                $user_id
+            ]);
+            
+            header("Location: profil.php?succes=1");
+            exit;
+        } catch (PDOException $e) {
+            $error_db = "Erreur lors de l'enregistrement : " . $e->getMessage();
+        }
+    } else {
+        $error_form = "Veuillez remplir les champs obligatoires.";
+    }
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouter_auto'])) {
+    $email = $_POST['email'];
+    $numero = $_POST['telephone'];
     $modele = trim($_POST['modele']);
     $immatriculation = trim($_POST['immatriculation']);
     $couleur = trim($_POST['couleur']);
@@ -131,6 +163,16 @@ $mes_participations = $stmt_mes_reservations->fetchAll();
                 <div class="row">
                     <div class="col-6 mb-2"><span class="text-muted small">Email :</span><br><strong><?php echo htmlspecialchars($user['email']); ?></strong></div>
                     <div class="col-6 mb-2"><span class="text-muted small">Téléphone : </span><br><strong>0<?php echo htmlspecialchars($user['telephone'] ?? 'Non renseigné'); ?></strong></div>
+                    <div class="mt-2 text-end">
+                        <button class="btn btn-sm btn-success" data-bs-toggle="collapse" data-bs-target="#collapseInformations">Changer mes informations ?</button>
+                    </div>
+                </div>
+            </div>
+            <div class="collapse" id="collapseInformations">
+                <div class="card card-body border-0 shadow-sm mb-4">
+                    <h5 class="fw-bold text-success mb-3">Enregistrer un nouveau véhicule</h5>
+                    <?php include("../form/maj_infos_form.html"); ?>
+                    
                 </div>
             </div>
         <?php if ($a_une_voiture): ?>

@@ -5,20 +5,22 @@ require_once '../db_connect.php';
 $duree_heures = !empty($_GET['duree_max_h']) ? floatval($_GET['duree_max_h']) : 999;
 $duree_max_minutes = $duree_heures * 60;
 
+$user_id = isset($_SESSION['utilisateur_id']) ? $_SESSION['utilisateur_id'] : 0;
 $depart = "%" . ($_GET['depart'] ?? '') . "%";
 $arrivee = "%" . ($_GET['arrivee'] ?? '') . "%";
 $prix_max = !empty($_GET['prix_max']) ? floatval($_GET['prix_max']) : 9999;
 $eco_only = isset($_GET['eco_only']) ? 1 : 0;
 $etoiles_min = !empty($_GET['etoiles_min']) ? floatval($_GET['etoiles_min']) : 0;
 
-$sql = "SELECT t.*, v.est_electrique, u.prenom, u.sexe, u.photo_profil,
-        (SELECT AVG(note) FROM avis WHERE utilisateur_id = t.chauffeur_id AND est_valide = 1) as etoiles
+$sql = "SELECT t.*, v.est_electrique, u.prenom, u.sexe, u.photo_profil, r.trajet_id AS reservation_trajet_id,
+            (SELECT AVG(note) FROM avis WHERE utilisateur_id = t.chauffeur_id AND est_valide = 1) as etoiles
         FROM trajet t
         INNER JOIN utilisateur u ON t.chauffeur_id = u.utilisateur_id
         LEFT JOIN voiture v ON u.utilisateur_id = v.utilisateur_id
-        WHERE t.ville_depart LIKE ? 
-        AND t.ville_arrivee LIKE ? 
-        AND t.prix <= ? 
+        LEFT JOIN reservation r ON t.trajet_id = r.trajet_id AND r.utilisateur_id = $user_id
+        WHERE t.ville_depart LIKE ?
+        AND t.ville_arrivee LIKE ?
+        AND t.prix <= ?
         AND TIMESTAMPDIFF(MINUTE, t.heure_depart, t.heure_arrivee) <= ?";
 
 if ($eco_only) {
@@ -81,6 +83,12 @@ $trajets = $stmt->fetchAll();
             <?php else: ?>
                 <?php foreach ($trajets as $t): 
                     if (isset($t['statut']) && $t['statut'] === 'termine') {
+                    continue; 
+                    }
+                    if (isset ($t['chauffeur_id']) && $t['chauffeur_id'] === $user_id) {
+                    continue; 
+                    }
+                    if ($user_id !== 0 && $t['reservation_trajet_id'] !== null) {
                     continue; 
                     }
                     $start = new DateTime($t['heure_depart']);
