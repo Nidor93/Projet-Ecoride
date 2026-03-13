@@ -17,9 +17,6 @@ Lien deployer : https://ecoride-mat.alwaysdata.net
 Lien du dépot github : https://github.com/Nidor93/Projet-Ecoride.git
 Lien anglophone : https://write.corbpie.com/converting-minutes-to-hours-and-minutes-with-php/
 
-Utilisateur mail et mot de passe : test@mail.com azertyuiop/1
-Admin mail et mot de passe : admin@mail.com  Azertyuiop/1
-Employe mail et mot de passe : employe@mail.com  Azertyuiop/1
 
 
 Résumé du projet :
@@ -95,7 +92,7 @@ MySQL (données relationnelles : utilisateurs, trajets, crédits…)
 MongoDB (statistiques, logs, données analytiques)
 
 Déploiement :
-Application : Alwaysdata
+Application : Alwaysdata, Docker
 Base NoSQL : MongoDB Atlas
 
 Fonctionnalités principales :

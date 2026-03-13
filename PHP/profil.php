@@ -39,9 +39,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 }
 
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $modele = trim($_POST['modele']);
+    $immatriculation = trim($_POST['immatriculation']);
+    $couleur = trim($_POST['couleur']);
+    $date_immat = $_POST['date_immat'];
+    $places = (int)$_POST['places'];
+    $pref_fumeur = isset($_POST['pref_fumeur']) ? 1 : 0;
+    $pref_animal = isset($_POST['pref_animal']) ? 1 : 0;
+    $categorie = trim($_POST['categorie']);
+    $est_electrique = isset($_POST['est_electrique']) ? 1 : 0;
+    $user_id = $_SESSION['utilisateur_id'] ?? null;
+
+
+    if (!empty($modele) && !empty($immatriculation)) {
+        try {
+            $sql_ins = "UPDATE voiture
+                        SET modele = ?, immatriculation = ?, couleur= ?, date_immat= ?, places = ?, pref_fumeur = ?, pref_animal = ?, categorie = ?, est_electrique = ? 
+                        WHERE utilisateur_id = ?";
+
+            $stmt_ins = $pdo->prepare($sql_ins);
+            $stmt_ins->execute([
+                $modele, $couleur, $immatriculation, $date_immat, 
+                $places, $pref_fumeur, $pref_animal, $categorie, $est_electrique, $user_id
+            ]);
+            
+            header("Location: profil.php?succes=1");
+            exit;
+        } catch (PDOException $e) {
+            $error_db = "Erreur lors de l'enregistrement : " . $e->getMessage();
+        }
+    } else {
+        $error_form = "Veuillez remplir les champs obligatoires.";
+    }
+}
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouter_auto'])) {
-    $email = $_POST['email'];
-    $numero = $_POST['telephone'];
     $modele = trim($_POST['modele']);
     $immatriculation = trim($_POST['immatriculation']);
     $couleur = trim($_POST['couleur']);
@@ -100,17 +133,17 @@ $stmt_mes_trajets = $pdo->prepare("SELECT trajet_id, ville_depart, ville_arrivee
 $stmt_mes_trajets->execute([$user_id]);
 $mes_trajets_proposes = $stmt_mes_trajets->fetchAll();
 
-$stmt_mes_reservations = $pdo->prepare("
-    SELECT t.trajet_id, t.ville_depart, t.ville_arrivee, t.date_depart, t.heure_depart, t.statut, u.prenom as chauffeur_nom 
-    FROM reservation r 
-    JOIN trajet t ON r.trajet_id = t.trajet_id 
-    JOIN utilisateur u ON t.chauffeur_id = u.utilisateur_id 
-    WHERE r.utilisateur_id = ? 
-    ORDER BY t.date_depart DESC
-");
+$stmt_mes_reservations = $pdo->prepare("SELECT t.trajet_id, t.ville_depart, t.ville_arrivee, t.date_depart, t.heure_depart, t.statut, u.prenom as chauffeur_nom 
+                                        FROM reservation r 
+                                        JOIN trajet t ON r.trajet_id = t.trajet_id 
+                                        JOIN utilisateur u ON t.chauffeur_id = u.utilisateur_id 
+                                        WHERE r.utilisateur_id = ? 
+                                        ORDER BY t.date_depart DESC");
+                                        
 $stmt_mes_reservations->execute([$user_id]);
 $mes_participations = $stmt_mes_reservations->fetchAll();
 ?>
+
 <?php include('../components/header.php') ?>
 
 <body class="d-flex flex-column min-vh-100 bg-light">
@@ -118,7 +151,6 @@ $mes_participations = $stmt_mes_reservations->fetchAll();
 <?php include('../components/nav.php') ?>
 
 <div class="main-content container my-5">
-    
     <?php if (isset($error_form) || isset($error_db)): ?>
         <div class="alert alert-danger shadow-sm"><?php echo $error_form ?? $error_db; ?></div>
     <?php endif; ?>
@@ -132,7 +164,6 @@ $mes_participations = $stmt_mes_reservations->fetchAll();
             <div class="card border-0 shadow-sm text-center p-4 mb-4">
                 <div class="profile-pic-wrapper text-center">
                     <?php include("../form/maj_photo_form.php"); ?>
-                    
                 </div>
                 <h3 class="fw-bold mb-0"><?php echo htmlspecialchars($user['prenom'] . ' ' . $user['nom']); ?></h3>
                 <div class="badge bg-success my-3 p-2"><?php echo $user['credit'] ?? 0; ?> Crédits</div>
@@ -170,7 +201,7 @@ $mes_participations = $stmt_mes_reservations->fetchAll();
             </div>
             <div class="collapse" id="collapseInformations">
                 <div class="card card-body border-0 shadow-sm mb-4">
-                    <h5 class="fw-bold text-success mb-3">Enregistrer un nouveau véhicule</h5>
+                    <h5 class="fw-bold text-success mb-3">Enregistrer de nouvelles informations</h5>
                     <?php include("../form/maj_infos_form.html"); ?>
                     
                 </div>
@@ -277,7 +308,7 @@ $mes_participations = $stmt_mes_reservations->fetchAll();
                                             <?php if ($res['statut'] === 'attente'): ?>
                                                 <a href="supprimer_trajet.php?id=<?php echo $res['trajet_id']; ?>" 
                                                    class="btn btn-sm btn-outline-danger"
-                                                   onclick="return confirm('Voulez-vous vraiment annuler votre réservation ?')">
+                                                   onclick="return confirm('Voulez-vous vraiment annuler votre réservation ? (2 crédits seront prélevés de votre compte)')">
                                                    Annuler
                                                 </a>
                                             <?php else: ?>
@@ -312,6 +343,22 @@ $mes_participations = $stmt_mes_reservations->fetchAll();
                                         <i class="bi bi-chat-dots"></i> "<?php echo htmlspecialchars($v['categorie']); ?>"
                                     </p>
                             <?php endif; ?>
+                            <div class="mt-2 text-end">
+                                <a href="supprimer_voiture.php?id=<?php echo $mes_voitures[0]['voiture_id']; ?>" 
+                                    class="btn btn-sm btn-outline-danger"
+                                    onclick="return confirm('Voulez-vous vraiment supprimer votre véhicule ?')">
+                                    Supprimer Véhicule
+                                </a>
+                            </div>
+                            <div class="mt-2 text-end">
+                                <button class="btn btn-sm btn-success" data-bs-toggle="collapse" data-bs-target="#collapseVoitureUpdate">Changer les informations du véhicule ?</button>
+                            </div>
+                        </div>
+                        <div class="collapse" id="collapseVoitureUpdate">
+                            <div class="card card-body border-0 shadow-sm mb-4">
+                                <h5 class="fw-bold text-success mb-3">Mise à jour des informations du véhicule</h5>
+                                <?php include("../form/maj_infos_voiture_form.html"); ?>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -321,10 +368,8 @@ $mes_participations = $stmt_mes_reservations->fetchAll();
                 <div class="card card-body border-0 shadow-sm mb-4">
                     <h5 class="fw-bold text-success mb-3">Enregistrer un nouveau véhicule</h5>
                     <?php include("../form/nouveau_vehicule_form.html"); ?>
-                    
                 </div>
             </div>
-            
         </div>
     </div>
 </div>
