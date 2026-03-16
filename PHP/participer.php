@@ -9,24 +9,29 @@ if (!isset($_SESSION['utilisateur_id']) || !isset($_GET['id'])) {
 
 $user_id = $_SESSION['utilisateur_id'];
 $trajet_id = intval($_GET['id']);
+$frais_service = 2;
 
 try {
     $pdo->beginTransaction();
 
-    $stmt = $pdo->prepare("SELECT t.nb_place, u.credit FROM trajet t 
-                           JOIN utilisateur u ON u.utilisateur_id = ? 
-                           WHERE t.trajet_id = ? FOR UPDATE");
-    $stmt->execute([$user_id, $trajet_id]);
+    $stmt = $pdo->prepare("SELECT t.nb_place, t.prix, u.credit 
+                           FROM trajet t 
+                           CROSS JOIN utilisateur u
+                           WHERE t.trajet_id = ? AND u.utilisateur_id = ?
+                           FOR UPDATE");
+    $stmt->execute([$trajet_id, $user_id]);
     $data = $stmt->fetch();
 
     if (!$data) {
         throw new Exception("Données introuvables.");
     }
 
-    if ($data['nb_place'] > 0 && $data['credit'] >= 2) {
+$cout_total = $data['prix'] + $frais_service;
 
-        $upd_user = $pdo->prepare("UPDATE utilisateur SET credit = credit - 2 WHERE utilisateur_id = ?");
-        $upd_user->execute([$user_id]);
+    if ($data['nb_place'] > 0 && $data['credit'] >= $cout_total) {
+
+        $upd_user = $pdo->prepare("UPDATE utilisateur SET credit = credit - ? WHERE utilisateur_id = ?");
+        $upd_user->execute([$cout_total, $user_id]);
 
         $upd_trajet = $pdo->prepare("UPDATE trajet SET nb_place = nb_place - 1 WHERE trajet_id = ?");
         $upd_trajet->execute([$trajet_id]);
@@ -44,7 +49,8 @@ try {
 
     } else {
         $pdo->rollBack();
-        header('Location: details.php?id='.$trajet_id.'&error=insuffisant');
+        $error = ($data['nb_place'] <= 0) ? 'complet' : 'insuffisant';
+        header('Location: details.php?id='.$trajet_id.'&error=' .$error);
         exit;
     }
 

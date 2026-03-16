@@ -19,7 +19,7 @@ try {
 
     if ($trajet_chauffeur) {
         $stmt_p = $pdo->prepare("
-            SELECT u.utilisateur_id, u.email, t.ville_depart, t.ville_arrivee, t.date_depart, t.nb_place,
+            SELECT u.utilisateur_id, u.email, t.prix, t.ville_depart, t.ville_arrivee, t.date_depart, t.nb_place,
             FROM reservation r
             JOIN utilisateur u ON r.utilisateur_id = u.utilisateur_id
             JOIN trajet t ON r.trajet_id = t.trajet_id
@@ -28,16 +28,20 @@ try {
         $stmt_p->execute([$id_cible]);
         $passagers = $stmt_p->fetchAll();
 
-        $stmt_rembourse = $pdo->prepare("UPDATE utilisateur SET credit = credit + 2 WHERE utilisateur_id = ?");
+        $stmt_rembourse = $pdo->prepare("UPDATE utilisateur SET credit = credit + ? WHERE utilisateur_id = ?");
 
         foreach ($passagers as $p) {
-            $stmt_rembourse->execute([$p['utilisateur_id']]);
+            $prix_a_rembourser = $p['prix'];
+            $stmt_rembourse->execute([$prix_a_rembourser, $p['utilisateur_id']]);
 
             $to = $p['email'];
             $subject = "Annulation de votre trajet EcoRide";
-            $message = "Bonjour, \n\nLe trajet " . htmlspecialchars($p['ville_depart']) . " - " . htmlspecialchars($p['ville_arrivee']) . " a été annulé par le chauffeur. Vos 2 crédits ont été remboursés.";
+            $message = "Bonjour, \n\nLe trajet " . htmlspecialchars($p['ville_depart']) . " - " . htmlspecialchars($p['ville_arrivee']) . " a été annulé par le chauffeur. Vos crédits ont été remboursés (2 crédits ont était garder par la plateforme pour la transaction).";
             @mail($to, $subject, $message, "From: ne-pas-repondre@ecoride.fr");
         }
+
+        $del_res = $pdo->prepare("DELETE FROM reservation WHERE trajet_id = ?");
+        $del_res->execute([$id_cible]);
 
         $del = $pdo->prepare("DELETE FROM trajet WHERE trajet_id = ?");
         $del->execute([$id_cible]);
@@ -45,13 +49,14 @@ try {
         $msg_succes = "annule_rembourse";
 
     } else {
-        $stmt_res = $pdo->prepare("
-            SELECT t.statut FROM reservation r 
-            JOIN trajet t ON r.trajet_id = t.trajet_id 
-            WHERE r.trajet_id = ? AND r.utilisateur_id = ?
+        $stmt_res = $pdo->prepare("SELECT t.statut, t.prix
+                                   FROM reservation r 
+                                   JOIN trajet t ON r.trajet_id = t.trajet_id 
+                                   WHERE r.trajet_id = ? AND r.utilisateur_id = ?
         ");
         $stmt_res->execute([$id_cible, $user_id]);
         $reservation = $stmt_res->fetch();
+        $prix_a_rembourser = $reservation['prix'];
 
         if ($reservation && $reservation['statut'] === 'attente') {
             $del_res = $pdo->prepare("DELETE FROM reservation WHERE trajet_id = ? AND utilisateur_id = ?");
@@ -59,8 +64,8 @@ try {
 
             $up_place = $pdo->prepare("UPDATE trajet SET nb_place = nb_place + 1 WHERE trajet_id = ?");
             $up_place->execute([$id_cible]);
-            $up_credit = $pdo->prepare("UPDATE utilisateur SET credit = credit + 2 WHERE utilisateur_id = ?");
-            $up_credit->execute([$user_id]);
+            $up_credit = $pdo->prepare("UPDATE utilisateur SET credit = credit + ? WHERE utilisateur_id = ?");
+            $up_credit->execute([$prix_a_rembourser, $user_id]);
             
             $msg_succes = "annulation_ok";
         } else {
