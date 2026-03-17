@@ -10,16 +10,17 @@ $page = basename($_SERVER['PHP_SELF']);
         </button>
         <div class="collapse navbar-collapse" id="menu">
             <ul class="navbar-nav ms-auto">
-               <li class="nav-item"><a class="nav-link <?= ($page == '../PHP/index.php') ? 'active fw-bold' : ''; ?>" href="../PHP/index.php">Accueil</a></li>
-               <li class="nav-item"><a class="nav-link <?= ($page == '../PHP/recherche.php') ? 'active fw-bold' : ''; ?>" href="../PHP/recherche.php">Accès aux Covoiturages</a></li>
+               <li class="nav-item"><a class="nav-link <?= ($page == 'index.php') ? 'active fw-bold' : ''; ?>" href="../PHP/index.php">Accueil</a></li>
+               <li class="nav-item"><a class="nav-link <?= ($page == 'recherche.php') ? 'active fw-bold' : ''; ?>" href="../PHP/recherche.php">Accès aux Covoiturages</a></li>
             <?php if (isset($_SESSION['utilisateur_id'])): ?>
-               <li class="nav-item"><a class="nav-link <?= ($page == '../PHP/profil.php') ?'active fw-bold' : ''; ?>" href="../PHP/profil.php">Mon Profil</a></li>
-               <li class="nav-item"><a class="nav-link text-warning" href="../PHP/deconnexion.php">Déconnexion</a></li>
+               <li class="nav-item"><a class="nav-link <?= ($page == 'profil.php') ?'active fw-bold' : ''; ?>" href="../PHP/profil.php">Mon Profil</a></li>
+               <li class="nav-item"><a class="nav-link text-warning" href="deconnexion.php">Déconnexion</a></li>
             <?php else: ?>
-               <li class="nav-item"><a class="nav-link <?=  ($page == '../PHP/connexion.php') ? 'active fw-bold' : ''; ?>" href="../PHP/connexion.php">Connexion</a></li>
-               <li class="nav-item"><a class="nav-link <?=  ($page == '../PHP/inscription.php') ? 'active fw-bold' : ''; ?>" href="../PHP/inscription.php">Inscription</a></li>
+               <li class="nav-item"><a class="nav-link <?=  ($page == 'connexion.php') ? 'active fw-bold' : ''; ?>" href="../PHP/connexion.php">Connexion</a></li>
+               <li class="nav-item"><a class="nav-link <?=  ($page == 'inscription.php') ? 'active fw-bold' : ''; ?>" href="../PHP/inscription.php">Inscription</a></li>
             <?php endif; ?>
-               <li class="nav-item"><a class="nav-link <?= ($page == '../PHP/contact.php') ? 'active fw-bold' : ''; ?>" href="../PHP/contact.php">Contact</a></li>
+               <li class="nav-item"><a class="nav-link <?= ($page == 'contact.php') ? 'active fw-bold' : ''; ?>" href="../PHP/contact.php">Contact</a></li>
+               <li class="nav-item"><a class="nav-link <?= ($page == 'compteur_co2.php') ?'active fw-bold' : ''; ?>" href="../PHP/compteur_co2.php">Compteur de Co2</a></li>
             </ul>
         </div>
     </div>

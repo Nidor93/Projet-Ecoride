@@ -2,38 +2,41 @@
 $page = basename($_SERVER['PHP_SELF']); 
 
 switch ($page) {
-    case '../PHP/index.php':
+    case 'index.php':
         $titre = "EcoRide - Covoiturage écologique";
         break;
-    case '../PHP/recherche.php':
+    case 'recherche.php':
         $titre = "EcoRide - Rechercher un trajet";
         break;
-    case '../PHP/contact.php':
+    case 'contact.php':
         $titre = "EcoRide - Contact";
         break;
-    case '../PHP/connexion.php':
+    case 'connexion.php':
         $titre = "EcoRide - Connexion";
         break;
-    case  '../PHP/details.php':
+    case  'details.php':
         $titre = "EcoRide - Détails du voyage";
         break;
-    case '../PHP/inscription.php':
+    case 'inscription.php':
         $titre = "EcoRide - Inscription";
         break;
-    case '../PHP/mentions-legales.php':
+    case 'mentions-legales.php':
         $titre = "EcoRide - Mentions Légales";
         break;
-    case '../PHP/new-password.php':
+    case 'new-password.php':
         $titre = "EcoRide - Récupération de mot de passe";
         break;
-    case '../PHP/profil.php':
+    case 'profil.php':
         $titre = "EcoRide - Mon Profil";
         break;
-    case '../PHP/profil_admin.php':
+    case 'profil_admin.php':
         $titre = "Espace Administrateur - Modération";
         break;
-    case '../PHP/profil_employe.php':
+    case 'profil_employe.php':
         $titre = "Espace Employé - Modération";
+        break;
+    case 'compteur_co2.php':
+        $titre = "Ecoride - Compteur Co2";
         break;
     default:
         $titre = "EcoRide";
