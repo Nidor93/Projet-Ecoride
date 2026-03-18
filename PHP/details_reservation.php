@@ -54,7 +54,7 @@ $dernier_avis = $stmt_last_avis->fetch();
 <div class="container my-5 flex-grow-1">
     <div class="mb-4">
         <a href="javascript:history.back()" class="btn btn-outline-success btn-sm">
-            ← Retour aux résultats
+            ← Retour au profil
         </a>
     </div>
 
@@ -173,30 +173,53 @@ $dernier_avis = $stmt_last_avis->fetch();
                     <i class="bi bi-people"></i> <?php echo $t['nb_place']; ?> places restantes
                 </p>
 
-                <div class="d-grid gap-2">
-                    <?php if (!isset($_SESSION['utilisateur_id'])): ?>
-                        <a href="connexion.php" class="btn btn-warning btn-lg fw-bold shadow-sm">Connectez-vous pour participer</a>
-                    <?php elseif ($t['nb_place'] <= 0): ?>
-                        <button class="btn btn-secondary btn-lg fw-bold" disabled>Trajet Complet</button>
-                    <?php elseif ($credits_passager < 2): ?>
-                        <button class="btn btn-danger btn-lg fw-bold" disabled>Crédits insuffisants (2)</button>
-                    <?php else: ?>
-                        <button onclick="confirmerParticipation()" class="btn btn-success btn-lg fw-bold shadow-sm">Participer au voyage</button>
-                        <small class="text-muted mt-1 small">Prélèvement de 2 crédits inclus</small>
-                    <?php endif; ?>
-                </div>
-
-                <script>
-                    function confirmerParticipation() {
-                        if (confirm("Voulez-vous réserver votre place sur ce trajet ?")) {
-                            if (confirm("Confirmez-vous l'utilisation de 2 crédits pour valider la participation ?")) {
-                                window.location.href = "participer.php?id=<?php echo $t['trajet_id']; ?>";
-                            }
-                        }
-                    }
-                </script>
             </div>
         </div>
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card shadow-sm border-0">
+                        <div class="card-header bg-success text-white text-center py-3">
+                            <h4 class="mb-0">Laisser un avis</h4>
+                        </div>
+                        <div class="card-body p-4">
+                            <form action="traitement_avis.php" method="POST">
+                                <input type="hidden" name="trajet_id" value="<?php echo $_GET['id']; ?>">
+
+                                <div class="mb-4 text-center">
+                                    <label class="form-label d-block fw-bold">Note globale</label>
+                                    <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                                        <?php for($i=1; $i<=5; $i++): ?>
+                                            <input type="radio" class="btn-check" name="note" id="star<?php echo $i; ?>" value="<?php echo $i; ?>" required>
+                                            <label class="btn btn-outline-warning" for="star<?php echo $i; ?>">
+                                                <?php echo $i; ?> ★
+                                            </label>
+                                        <?php endfor; ?>
+                                    </div>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="commentaire" class="form-label fw-bold">Votre commentaire</label>
+                                    <textarea class="form-control" id="commentaire" name="commentaire" rows="4" 
+                                        placeholder="Racontez votre expérience..." required></textarea>
+                                    <div class="form-text">Votre avis sera soumis à modération avant publication.</div>
+                                </div>
+
+                                <div class="d-grid">
+                                    <?php if (isset($_SESSION['utilisateur_id'])): ?>
+                                        <button type="submit" name="submit_avis" class="btn btn-success btn-lg fw-bold">
+                                            Publier mon avis
+                                        </button>
+                                    <?php else : ?>
+                                        <a href="connexion.php" class="btn btn-warning btn-lg fw-bold shadow-sm">Connectez-vous pour laisser un avis</a>
+                                    <?php endif; ?>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>  
     </div>
 </div>
 

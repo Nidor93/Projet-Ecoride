@@ -281,8 +281,8 @@ $mes_participations = $stmt_mes_reservations->fetchAll();
                                     <th>Date</th>
                                     <th>Itinéraire</th>
                                     <th>Chauffeur</th>
-                                    <th>Prix</th>
                                     <th>Statut</th>
+                                    <th>Détails</th>
                                     <th>Annulation</th>
                                 </tr>
                             </thead>
@@ -292,7 +292,6 @@ $mes_participations = $stmt_mes_reservations->fetchAll();
                                         <td class="small"><?php echo date('d/m/Y', strtotime($res['date_depart'])); ?></td>
                                         <td><strong><?php echo htmlspecialchars($res['ville_depart']); ?></strong> → <strong><?php echo htmlspecialchars($res['ville_arrivee']); ?></strong></td>
                                         <td><?php echo htmlspecialchars($res['chauffeur_nom']); ?></td>
-                                        <td class="fw-bold text-success">Payé</td>
                                         <td class="fw-bold">
                                             <?php if ($res['statut'] == 'attente'): ?>
                                                 <p class="mb-1">En attente</p>
@@ -303,6 +302,9 @@ $mes_participations = $stmt_mes_reservations->fetchAll();
                                             <?php elseif ($res['statut'] == 'termine'): ?>
                                                 <p class="mb-1">Trajet clos</p>
                                             <?php endif; ?>
+                                        </td>
+                                        <td class="fw-bold text-success">
+                                            <a href="details_reservation.php?id=<?php echo $res['trajet_id']; ?>" class="btn btn-success btn-sm w-100 fw-bold"> Détails </a>
                                         </td>
                                         <td>
                                             <?php if ($res['statut'] === 'attente'): ?>
