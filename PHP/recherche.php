@@ -46,7 +46,6 @@ $trajets = $stmt->fetchAll();
     <style>
         .ride-card { transition: transform 0.2s; cursor: pointer; }
         .ride-card:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important; }
-        .img-avatar { width: 60px; height: 60px; object-fit: cover; border: 2px solid #198754; }
     </style>
 <body class="d-flex flex-column min-vh-100 bg-light">
 

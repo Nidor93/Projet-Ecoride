@@ -14,6 +14,7 @@ $page = basename($_SERVER['PHP_SELF']);
                <li class="nav-item"><a class="nav-link <?= ($page == 'recherche.php') ? 'active fw-bold' : ''; ?>" href="../PHP/recherche.php">Accès aux Covoiturages</a></li>
             <?php if (isset($_SESSION['utilisateur_id'])): ?>
                <li class="nav-item"><a class="nav-link <?= ($page == 'profil.php') ?'active fw-bold' : ''; ?>" href="../PHP/profil.php">Mon Profil</a></li>
+               <li class="nav-item"><a class="nav-link <?= ($page == 'messagerie.php') ?'active fw-bold' : ''; ?>" href="../PHP/messagerie.php">Ma Messagerie</a></li>
                <li class="nav-item"><a class="nav-link text-warning" href="deconnexion.php">Déconnexion</a></li>
             <?php else: ?>
                <li class="nav-item"><a class="nav-link <?=  ($page == 'connexion.php') ? 'active fw-bold' : ''; ?>" href="../PHP/connexion.php">Connexion</a></li>

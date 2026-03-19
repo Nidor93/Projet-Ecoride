@@ -38,6 +38,9 @@ switch ($page) {
     case 'compteur_co2.php':
         $titre = "Ecoride - Compteur Co2";
         break;
+    case 'messagerie.php':
+        $titre = "Ecoride - Messagerie";
+        break;
     default:
         $titre = "EcoRide";
 }
