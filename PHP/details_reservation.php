@@ -2,14 +2,16 @@
 session_start();
 require_once '../db_connect.php';
 
+$user_id = $_SESSION['utilisateur_id'] ?? null;
 $id_trajet = isset($_GET['id']) ? intval($_GET['id']) : 0;
-$current_user_id = isset($_SESSION['utilisateur_id']) ? $_SESSION['utilisateur_id'] : null;
 
 if ($id_trajet <= 0) {
     header('Location: recherche.php');
     exit;
 }
-$sql = "SELECT t.*, u.utilisateur_id as chauffeur_id, u.prenom, u.nom, u.sexe, u.photo_profil, u.telephone, v.modele, v.couleur, v.pref_animal, v.pref_fumeur, v.immatriculation, v.est_electrique, v.categorie,
+
+$sql = "SELECT t.*, u.utilisateur_id as chauffeur_id, u.prenom, u.nom, u.sexe, u.photo_profil, u.telephone, 
+               v.modele, v.couleur, v.pref_animal, v.pref_fumeur, v.immatriculation, v.est_electrique, v.categorie,
         (SELECT AVG(note) FROM avis WHERE utilisateur_id = u.utilisateur_id AND est_valide = 1) as note_moyenne,
         (SELECT COUNT(*) FROM avis WHERE utilisateur_id = u.utilisateur_id AND est_valide = 1) as nb_avis
         FROM trajet t
@@ -20,17 +22,22 @@ $sql = "SELECT t.*, u.utilisateur_id as chauffeur_id, u.prenom, u.nom, u.sexe, u
 $stmt = $pdo->prepare($sql);
 $stmt->execute([$id_trajet]);
 $t = $stmt->fetch();
-        
+
+if (!$t) {
+    header('Location: recherche.php');
+    exit;
+}
+
 $credits_passager = 0;
-if (isset($_SESSION['utilisateur_id'])) {
+if ($user_id) {
     $stmt_user = $pdo->prepare("SELECT credit FROM utilisateur WHERE utilisateur_id = ?");
-    $stmt_user->execute([$_SESSION['utilisateur_id']]);
-    $user_connected = $stmt_user->fetch();
-    $credits_passager = $user_connected['credit'] ?? 0;
+    $stmt_user->execute([$user_id]);
+    $user_info = $stmt_user->fetch();
+    $credits_passager = $user_info['credit'] ?? 0;
 }
 
 if (isset($_POST['submit_message'])) {
-    if (!$current_user_id) {
+    if (!$user_id) {
         header('Location: connexion.php');
         exit;
     }
@@ -45,24 +52,34 @@ if (isset($_POST['submit_message'])) {
                 INSERT INTO messagerie (trajet_id, expediteur_id, destinataire_id, contenu, date_envoi) 
                 VALUES (?, ?, ?, ?, NOW())
             ");
-            $stmt_ins->execute([$trajet_id_post, $current_user_id, $chauffeur_id_post, $contenu]);
+            $stmt_ins->execute([$trajet_id_post, $user_id, $chauffeur_id_post, $contenu]);
             header("Location: messagerie.php?msg=envoye");
             exit;
         } catch (PDOException $e) {
-            die("Erreur BDD : " . $e->getMessage());
+            error_log($e->getMessage());
+            $error_msg = "Impossible d'envoyer le message.";
         }
     }
 }
 
-$stmt_last_avis = $pdo->prepare("
-    SELECT a.*, u.prenom, u.photo_profil
-    FROM avis a 
-    JOIN utilisateur u ON a.passager_id = u.utilisateur_id 
-    WHERE a.utilisateur_id = ? 
-    AND a.est_valide = 1 
-    ORDER BY a.avis_id DESC 
-    LIMIT 1
-");
+$deja_donne = false;
+if ($user_id) {
+    $stmt_verif_avis = $pdo->prepare("SELECT COUNT(*) FROM avis 
+                                      WHERE passager_id = ? 
+                                      AND utilisateur_id = ? 
+                                      AND trajet_id = ?");
+
+    $stmt_verif_avis->execute([$user_id, $t['chauffeur_id'], $t['trajet_id']]);
+    $deja_donne = $stmt_verif_avis->fetchColumn() > 0;
+}
+
+$stmt_last_avis = $pdo->prepare("SELECT a.*, u.prenom, u.photo_profil
+                                 FROM avis a 
+                                 JOIN utilisateur u ON a.passager_id = u.utilisateur_id 
+                                 WHERE a.utilisateur_id = ? 
+                                 AND a.est_valide = 1 
+                                 ORDER BY a.avis_id DESC 
+                                 LIMIT 1");
 
 $stmt_last_avis->execute([$t['chauffeur_id']]);
 $dernier_avis = $stmt_last_avis->fetch();
@@ -83,7 +100,7 @@ $dernier_avis = $stmt_last_avis->fetch();
                 <?php include('../components/details_components.php') ?>
             </div>
         </div>
-        <div class="container mt-5">
+        <div class="container mt-4">
             <div class="row g-4 justify-content-center">
                 <div class="col-md-6">
                     <div class="card shadow-sm border-0 h-100"> <div class="card-header bg-success text-white text-center py-3">
@@ -110,13 +127,19 @@ $dernier_avis = $stmt_last_avis->fetch();
                                     <div class="form-text">Votre avis sera soumis à la modération avant publication.</div>
                                 </div>
                                 <div class="d-grid">
-                                    <?php if (isset($_SESSION['utilisateur_id'])): ?>
-                                        <button type="submit" name="submit_avis" class="btn btn-success btn-lg fw-bold">
-                                            Publier mon avis
-                                        </button>
-                                    <?php else : ?>
-                                        <a href="connexion.php" class="btn btn-warning btn-lg fw-bold shadow-sm">Connectez vous pour laisser un avis</a>
-                                    <?php endif; ?>
+                                    <?php if (!isset($_SESSION['utilisateur_id'])): ?>
+                                    <a href="connexion.php" class="btn btn-warning btn-lg fw-bold shadow-sm">
+                                        Connectez-vous pour laisser un avis
+                                    </a>
+                                <?php elseif ($deja_donne): ?>
+                                    <div class="alert alert-info fw-bold">
+                                        Vous avez déjà mis un avis pour ce trajet.
+                                    </div>
+                                <?php else: ?>
+                                    <button type="submit" name="submit_avis" class="btn btn-success btn-lg fw-bold">
+                                        Publier mon avis
+                                    </button>
+                                <?php endif; ?>
                                 </div>
                             </form>
                         </div>

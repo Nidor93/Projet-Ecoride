@@ -10,7 +10,7 @@ if (!isset($_SESSION['utilisateur_id']) || !isset($_GET['trajet_id'])) {
 $user_id = $_SESSION['utilisateur_id'];
 $trajet_id = intval($_GET['trajet_id']);
 
-$stmt_info = $pdo->prepare("SELECT t.ville_depart, t.ville_arrivee, u.sexe, u.prenom, u.photo_profil, u.utilisateur_id AS interlocuteur_id
+$stmt_info = $pdo->prepare("SELECT t.ville_depart, t.ville_arrivee, u.sexe, u.prenom, u.nom, u.photo_profil, u.telephone, u.utilisateur_id AS interlocuteur_id
                             FROM trajet t
                             JOIN messagerie m ON t.trajet_id = m.trajet_id
                             JOIN utilisateur u ON (u.utilisateur_id = m.expediteur_id OR u.utilisateur_id = m.destinataire_id)
@@ -44,43 +44,65 @@ $messages = $stmt_msg->fetchAll();
 
 <div class="container mt-4">
     <div class="mb-4">
-        <a href="javascript:history.back()" class="btn btn-outline-success btn-sm">
+        <a href="messagerie.php" class="btn btn-outline-success btn-sm">
             ← Retour à la messagerie
         </a>
     </div>
-    <div class="card shadow-sm border-0 m-4">
-        <div class="card-header bg-white py-3 d-flex align-items-center">
-            <?php
-            $default = ($info['sexe'] == 'F') ? '../Image/ProfilF.png' : (($info['sexe'] == 'H') ? '../Image/ProfilM.png' : '../Image/VoitureEcoride.png');
-            $img = (!empty($info['photo_profil']) && file_exists("../Image/" . $info['photo_profil'])) ? "../Image/" . $info['photo_profil'] : "../Image/" . $default;
-            ?>
-            <img src="<?php echo $img; ?>" class="rounded-circle img-avatar mb-2 m-2">
-            <div>
-                <h5 class="mb-0 fw-bold"><?= htmlspecialchars($info['prenom']) ?></h5>
-                <small class="text-muted"><?= htmlspecialchars($info['ville_depart']) ?> → <?= htmlspecialchars($info['ville_arrivee']) ?></small>
+
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="card border-2 shadow-sm border-success border-4 p-4 text-center h-100">
+                <div>
+                    <?php
+                    $default_img = ($info['sexe'] == 'F') ? 'ProfilF.png' : (($info['sexe'] == 'H') ? 'ProfilM.png' : 'VoitureEcoride.png');
+                    
+                    if (!empty($info['photo_profil']) && file_exists("../Image/" . $info['photo_profil'])) {
+                        $img_interlocuteur = "../Image/" . $info['photo_profil'];
+                    } else {
+                        $img_interlocuteur = "../Image/" . $default_img;
+                    }
+                    ?>
+                    <img src="<?= $img_interlocuteur ?>" class="rounded-circle mb-3 shadow-sm" width="120" height="120" alt="Photo de profil" style="object-fit: cover; border: 3px solid #f8f9fa;">
+                    
+                    <h4 class="fw-bold mb-1"><?= htmlspecialchars($info['prenom'] . ' ' . ($info['nom'] ?? '')); ?></h4>
+                    
+                    <?php if(!empty($info['telephone'])): ?>
+                        <p class="mb-2"><i class="bi bi-telephone"></i> 0<?= htmlspecialchars($info['telephone']); ?></p>
+                    <?php endif; ?>
+
+                    <br>
+                    <hr>
+                    <br>
+                    <p class="fw-bold">Conversation pour le trajet :<br>
+                    <strong><?= htmlspecialchars($info['ville_depart']) ?> → <?= htmlspecialchars($info['ville_arrivee']) ?></strong></p>
+                </div>
             </div>
         </div>
 
-        <div id="chatBox" class="card-body chat-container bg-white" 
-             data-trajet="<?= $trajet_id ?>" 
-             data-user="<?= $user_id ?>" 
-             data-lastid="<?= !empty($messages) ? end($messages)['message_id'] : 0 ?>">
-    
-            <?php foreach ($messages as $m): ?>
-                <?php $isMe = ($m['expediteur_id'] == $user_id); ?>
-                <div class="msg <?= $isMe ? 'msg-me' : 'msg-them' ?>">
-                    <?= nl2br(htmlspecialchars($m['contenu'])) ?>
-                    <span class="msg-date"><?= date('H:i', strtotime($m['date_envoi'])) ?></span>
+        <div class="col-lg-8">
+            <div class="card shadow-sm border-0 border-top border-success border-4 h-100">
+                <div id="chatBox" class="card-body chat-container bg-white" 
+                     data-trajet="<?= $trajet_id ?>" 
+                     data-user="<?= $user_id ?>" 
+                     data-lastid="<?= !empty($messages) ? end($messages)['message_id'] : 0 ?>">
+            
+                    <?php foreach ($messages as $m): ?>
+                        <?php $isMe = ($m['expediteur_id'] == $user_id); ?>
+                        <div class="msg <?= $isMe ? 'msg-me' : 'msg-them' ?>">
+                            <?= nl2br(htmlspecialchars($m['contenu'])) ?>
+                            <span class="msg-date"><?= date('H:i', strtotime($m['date_envoi'])) ?></span>
+                        </div>
+                    <?php endforeach; ?>
                 </div>
-            <?php endforeach; ?>
-        </div>
-
-        <div class="card-footer bg-white p-3">
-            <form id="chatForm" class="d-flex">
-                <input type="hidden" id="chauffeur_id" value="<?= $info['interlocuteur_id'] ?>">
-                <input type="text" id="messageInput" class="form-control me-2" placeholder="Écrivez votre message..." required autocomplete="off" autofocus>
-                <button type="submit" class="btn btn-success"><i class="bi bi-send"></i>→</button>
-            </form>
+                <div class="card-footer bg-white p-3 border-top-0">
+                    <hr class="border-3 border-success opacity-75">
+                    <form id="chatForm" class="d-flex">
+                        <input type="hidden" id="chauffeur_id" value="<?= $info['interlocuteur_id'] ?>">
+                        <input type="text" id="messageInput" class="form-control me-2 shadow-none" placeholder="Écrivez votre message..." required autocomplete="off">
+                        <button type="submit" class="btn btn-success m-2"><i class="bi bi-send"></i>→</button>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 </div>

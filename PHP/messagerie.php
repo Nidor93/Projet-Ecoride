@@ -36,7 +36,7 @@ $conversations = $stmt->fetchAll();
                 <div class="list-group shadow-sm">
                     <?php foreach ($conversations as $conv): ?>
                         <a href="chat.php?trajet_id=<?= $conv['trajet_id'] ?>" 
-                           class="list-group-item list-group-item-action p-3 <?= ($conv['est_lu'] == 0) ? 'bg-light border-start border-success border-4' : '' ?>">
+                           class="list-group-item list-group-item-action p-3 bg-white <?= ($conv['est_lu'] == 0) ? 'bg-light border-start border-success border-2 mt-2' : '' ?>">
                             
                             <div class="d-flex w-100 justify-content-between align-items-center">
                                 <h5 class="mb-1 fw-bold text-primary">

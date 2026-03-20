@@ -6,6 +6,7 @@ Ouvrez un terminal dans le dossier du projet et tapez : docker compose up --buil
 Une fois que les conteneurs sont en run, ouvrez votre navigateur sur : http://localhost:8080
 
 Utilisateur mail et mot de passe : test@mail.com azertyuiop/1
+Utilisateur2 mail et mot de passe : prototype@mail.com azertyuiop/1
 Admin mail et mot de passe : admin@mail.com  Azertyuiop/1
 Employe mail et mot de passe : employe@mail.com  Azertyuiop/1
 
