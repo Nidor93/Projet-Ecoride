@@ -27,20 +27,26 @@ while($row = $graph1_query->fetch()) {
     $nb_trajets[] = $row['nb_trajets'];
 }
 
-$graph2_query = $pdo->query("
-    SELECT t.date_depart, SUM(r.commission_credit) as gain 
-    FROM reservation r
-    JOIN trajet t ON r.trajet_id = t.trajet_id 
-    GROUP BY t.date_depart 
-    ORDER BY t.date_depart ASC 
-    LIMIT 7
-");
+$graph2_query = $pdo->query("SELECT t.date_depart, SUM(r.commission_credit) as gain 
+                             FROM reservation r
+                             JOIN trajet t ON r.trajet_id = t.trajet_id 
+                             GROUP BY t.date_depart 
+                             ORDER BY t.date_depart ASC 
+                             LIMIT 7");
 $gains = [];
 while($row = $graph2_query->fetch()) {
     $gains[] = $row['gain'];
 }
 
-$users = $pdo->query("SELECT * FROM utilisateur WHERE role != 'admin' ORDER BY role DESC")->fetchAll();
+$search = isset($_GET['nom']) ? trim($_GET['nom']) : '';
+
+if ($search !== '') {
+    $stmt_users = $pdo->prepare("SELECT * FROM utilisateur WHERE role != 'admin' AND (prenom LIKE ? OR nom LIKE ?) ORDER BY role DESC");
+    $stmt_users->execute(["%$search%", "%$search%"]);
+} else {
+    $stmt_users = $pdo->query("SELECT * FROM utilisateur WHERE role != 'admin' ORDER BY role DESC");
+}
+$users = $stmt_users->fetchAll();
 
 $queryTrajets = $pdo->query("SELECT date_depart, COUNT(*) as total FROM trajet GROUP BY date_depart ORDER BY date_depart ASC LIMIT 10");
 $statsTrajets = $queryTrajets->fetchAll(PDO::FETCH_ASSOC);
@@ -53,6 +59,15 @@ $statsEco = $queryEco->fetch(PDO::FETCH_ASSOC);
 
 $jsonTrajets = json_encode($statsTrajets);
 $jsonEco = json_encode($statsEco);
+
+$stmt_incidents = $pdo->prepare("SELECT a.note, a.commentaire, a.trajet_id, t.ville_depart, t.ville_arrivee, t.date_depart, t.heure_depart, u.prenom as passager_nom
+                                 FROM avis a
+                                 JOIN trajet t ON a.trajet_id = t.trajet_id
+                                 JOIN utilisateur u ON a.passager_id = u.utilisateur_id
+                                 WHERE a.note <= 2
+                                 ORDER BY t.date_depart DESC");
+$stmt_incidents->execute();
+$incidents = $stmt_incidents->fetchAll();
 
 ?>
 <?php include('../components/header.php') ?>
@@ -143,34 +158,63 @@ $jsonEco = json_encode($statsEco);
         .catch(error => console.error('Erreur lors du chargement des stats:', error));
     </script>
 
-    <div class="card border-0 shadow-sm p-2 mb-6">
-    <table class="table align-middle">
-        <thead>
-            <tr>
-                <th>Nom</th>
-                <th>Rôle</th>
-                <th>Statut</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach($users as $u): ?>
-            <tr>
-                <td><?php echo $u['prenom'].' '.$u['nom']; ?></td>
-                <td><span class="badge bg-info text-dark"><?php echo $u['role']; ?></span></td>
-                <td>
-                    <?php echo ($u['est_suspendu']) ? '<span class="text-danger">Suspendu</span>' : '<span class="text-success">Actif</span>'; ?>
-                </td>
-                <td>
-                    <a href="profil_admin.php?suspendre_id=<?php echo $u['utilisateur_id']; ?>" 
-                       class="btn btn-sm <?php echo ($u['est_suspendu']) ? 'btn-success' : 'btn-danger'; ?>">
-                       <?php echo ($u['est_suspendu']) ? 'Réactiver' : 'Suspendre'; ?>
-                    </a>
-                </td>
-            </tr>
-            <?php endforeach; ?>
-        </tbody>
-    </table>
+<?php include('../components/litige_card.php') ?>
+
+    <div class="card border-0 shadow-sm p-3 mb-3">
+    <form action="profil_admin.php" method="GET" class="row g-2">
+        <div class="col-md-10">
+            <input type="text" name="nom" class="form-control" placeholder="Rechercher un utilisateur par nom ou prénom" value="<?php echo htmlspecialchars($search); ?>">
+        </div>
+        <div class="col-md-2 d-grid">
+            <button type="submit" class="btn btn-success fw-bold">Rechercher</button>
+        </div>
+        <?php if($search !== ''): ?>
+            <div class="col-12 mt-2">
+                <a href="profil_admin.php" class="text-decoration-none small text-muted">← Réinitialiser la recherche</a>
+            </div>
+        <?php endif; ?>
+    </form>
+</div>
+
+    <div class="card border-0 shadow-sm p-2 mb-5">
+        <table class="table align-middle">
+            <thead class="table-light">
+                <tr>
+                    <th>Nom</th>
+                    <th>Rôle</th>
+                    <th>Statut</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php if (empty($users)): ?>
+                    <tr>
+                        <td colspan="4" class="text-center py-5">
+                            <i class="bi bi-person-x h1 text-muted"></i>
+                            <p class="mt-3">Aucun utilisateur trouvé pour "<strong><?php echo htmlspecialchars($search); ?></strong>".</p>
+                        </td>
+                    </tr>
+                <?php else: ?>
+                    <?php foreach($users as $u): ?>
+                    <tr>
+                        <td>
+                            <div class="fw-bold"><?php echo htmlspecialchars($u['prenom'].' '.$u['nom']); ?></div>
+                            <small class="text-muted"><?php echo htmlspecialchars($u['email']); ?></small>
+                        </td>
+                        <td><span class="badge bg-info text-dark"><?php echo ucfirst($u['role']); ?></span></td>
+                        <td>
+                            <?php echo ($u['est_suspendu']) ? '<span class="badge bg-danger">Suspendu</span>' : '<span class="badge bg-success">Actif</span>'; ?>
+                        </td>
+                        <td>
+                            <a href="profil_admin.php?suspendre_id=<?php echo $u['utilisateur_id']; ?>"class="btn btn-sm <?php echo ($u['est_suspendu']) ? 'btn-success' : 'btn-danger'; ?>">
+                           <?php echo ($u['est_suspendu']) ? 'Réactiver' : 'Suspendre'; ?>
+                        </a>
+                        </td>
+                    </tr>
+                    <?php endforeach; ?>
+                <?php endif; ?>
+            </tbody>
+        </table>
     </div>
 </div>
 
