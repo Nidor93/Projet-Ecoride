@@ -32,15 +32,13 @@ if (!$t) {
     die("Erreur : Ce trajet n'existe pas.");
 }
 
-$stmt_last_avis = $pdo->prepare("
-    SELECT a.*, u.prenom, u.photo_profil
-    FROM avis a 
-    JOIN utilisateur u ON a.passager_id = u.utilisateur_id 
-    WHERE a.utilisateur_id = ? 
-    AND a.est_valide = 1 
-    ORDER BY a.avis_id DESC 
-    LIMIT 1
-");
+$stmt_last_avis = $pdo->prepare("SELECT a.*, u.prenom, u.photo_profil
+                                 FROM avis a 
+                                 JOIN utilisateur u ON a.passager_id = u.utilisateur_id 
+                                 WHERE a.utilisateur_id = ? 
+                                 AND a.est_valide = 1 
+                                 ORDER BY a.avis_id DESC 
+                                 LIMIT 1");
 
 $stmt_last_avis->execute([$t['chauffeur_id']]);
 $dernier_avis = $stmt_last_avis->fetch();

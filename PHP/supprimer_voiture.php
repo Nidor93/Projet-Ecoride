@@ -18,13 +18,11 @@ try {
     $voiture_utilisateur = $stmt_chef->fetch();
 
     if ($voiture_utilisateur) {
-        $stmt_p = $pdo->prepare("
-            SELECT DISTINCT u.utilisateur_id, u.email, t.ville_depart, t.ville_arrivee
-            FROM reservation r
-            JOIN trajet t ON r.trajet_id = t.trajet_id
-            JOIN utilisateur u ON r.utilisateur_id = u.utilisateur_id
-            WHERE t.voiture_id = ?
-        ");
+        $stmt_p = $pdo->prepare("SELECT DISTINCT u.utilisateur_id, u.email, t.ville_depart, t.ville_arrivee
+                                 FROM reservation r
+                                 JOIN trajet t ON r.trajet_id = t.trajet_id
+                                 JOIN utilisateur u ON r.utilisateur_id = u.utilisateur_id
+                                 WHERE t.voiture_id = ?");
         $stmt_p->execute([$id_cible]);
         $passagers = $stmt_p->fetchAll();
 

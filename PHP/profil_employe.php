@@ -16,32 +16,20 @@ if (!$user || trim($user['role']) !== 'employe') {
     exit;
 }
 
-$stmt_avis = $pdo->prepare("
-    SELECT 
-        a.*, 
-        u.prenom as passager_nom, 
-        u.email as passager_email, 
-        c.prenom as chauffeur_nom, 
-        c.email as chauffeur_email 
-    FROM avis a 
-    JOIN utilisateur u ON a.passager_id = u.utilisateur_id 
-    JOIN utilisateur c ON a.utilisateur_id = c.utilisateur_id 
-    WHERE a.est_valide = 0
-");
+$stmt_avis = $pdo->prepare("SELECT a.*, u.prenom as passager_nom, u.email as passager_email, c.prenom as chauffeur_nom, c.email as chauffeur_email 
+                            FROM avis a 
+                            JOIN utilisateur u ON a.passager_id = u.utilisateur_id 
+                            JOIN utilisateur c ON a.utilisateur_id = c.utilisateur_id 
+                            WHERE a.est_valide = 0");
 $stmt_avis->execute();
 $avis_en_attente = $stmt_avis->fetchAll();
 
-$stmt_incidents = $pdo->prepare("
-    SELECT 
-        a.note, a.commentaire, a.trajet_id,
-        t.ville_depart, t.ville_arrivee, t.date_depart, t.heure_depart,
-        u.prenom as passager_nom
-    FROM avis a
-    JOIN trajet t ON a.trajet_id = t.trajet_id
-    JOIN utilisateur u ON a.passager_id = u.utilisateur_id
-    WHERE a.note <= 2
-    ORDER BY t.date_depart DESC
-");
+$stmt_incidents = $pdo->prepare("SELECT a.note, a.commentaire, a.trajet_id, t.ville_depart, t.ville_arrivee, t.date_depart, t.heure_depart, u.prenom as passager_nom
+                                 FROM avis a
+                                 JOIN trajet t ON a.trajet_id = t.trajet_id
+                                 JOIN utilisateur u ON a.passager_id = u.utilisateur_id
+                                 WHERE a.note <= 2
+                                 ORDER BY t.date_depart DESC");
 $stmt_incidents->execute();
 $incidents = $stmt_incidents->fetchAll();
 ?>

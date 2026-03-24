@@ -13,13 +13,11 @@ if (!$user_id || $trajet_id <= 0) {
     exit;
 }
 
-$stmt = $pdo->prepare("
-    SELECT message_id, expediteur_id, contenu, date_envoi 
-    FROM messagerie 
-    WHERE trajet_id = ? 
-    AND message_id > ? 
-    ORDER BY date_envoi ASC
-");
+$stmt = $pdo->prepare("SELECT message_id, expediteur_id, contenu, date_envoi 
+                       FROM messagerie 
+                       WHERE trajet_id = ? 
+                       AND message_id > ? 
+                       ORDER BY date_envoi ASC");
 $stmt->execute([$trajet_id, $last_id]);
 $messages = $stmt->fetchAll(PDO::FETCH_ASSOC);
 

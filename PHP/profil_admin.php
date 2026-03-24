@@ -88,135 +88,145 @@ $incidents = $stmt_incidents->fetchAll();
         </div>
     </div>
 </nav>
-<div class="main-content container my-4">
-    <div class="card border-0 shadow-sm mb-4">
-        <h3 class="col-md-4 text-center fw-bold text-success">Créer un compte employé</h3>
-        <div class="card-body">
-            <?php if (isset($_GET['success'])): ?>
-                <div class="alert alert-success">Le compte employé a été créé avec succès !</div>
-            <?php endif; ?>
 
-            <?php if (isset($_GET['error'])): ?>
-                <div class="alert alert-danger">
-                    <?php 
-                        echo ($_GET['error'] === 'email_existant') ? "Cet email est déjà utilisé." : "Une erreur est survenue lors de la création.";
-                    ?>
+<div class="main-content container py-4">
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="card border-0 shadow-sm text-center p-4 mb-4 sticky-top" style="top: 20px;">
+                <h3 class="fw-bold text-success mb-4">Tableau de Bord</h3>
+                <div class="d-grid gap-3">
+                    <button class="btn btn-success fw-bold shadow-sm" data-bs-toggle="collapse" data-bs-target="#collapseCree">
+                        <i class="bi bi-person-plus"></i> Créer un employé
+                    </button>
+                    <button class="btn btn-success fw-bold shadow-sm" data-bs-toggle="collapse" data-bs-target="#collapseStats">
+                        <i class="bi bi-graph-up"></i> Statistiques du site
+                    </button>
+                    <button class="btn btn-success fw-bold shadow-sm" data-bs-toggle="collapse" data-bs-target="#collapseUtilisateurs">
+                        <i class="bi bi-shield-lock"></i> Gérer les utilisateurs
+                    </button>
                 </div>
-            <?php endif; ?>
-            <?php include("../form/creer_employe_form.html"); ?>
+            </div>
+        </div>
+
+        <div class="col-lg-8">
             
-        </div>
-    </div>
-    <div class="card border-0 shadow-sm p-4 mb-2">
-        <div class="row mb-4">
-            <div class="col-md-4 text-center">
-                <div class="card bg-success text-white p-4">
-                    <h3>Total Crédits Gagnés</h3>
-                    <h1 class="display-4 fw-bold"><?php echo number_format($total_credits, 0, '.', ' '); ?></h1>
+            <div class="collapse mb-4" id="collapseCree" data-bs-parent=".main-content">
+                <div class="card border-0 shadow-sm p-4">
+                    <h3 class="fw-bold text-success text-center mb-4">Créer un compte employé</h3>
+                    <?php if (isset($_GET['success'])): ?>
+                        <div class="alert alert-success">Le compte employé a été créé avec succès !</div>
+                    <?php endif; ?>
+                    <?php if (isset($_GET['error'])): ?>
+                        <div class="alert alert-danger">
+                            <?= ($_GET['error'] === 'email_existant') ? "Cet email est déjà utilisé." : "Une erreur est survenue lors de la création."; ?>
+                        </div>
+                    <?php endif; ?>
+                    <?php include("../form/creer_employe_form.html"); ?>
                 </div>
             </div>
-            <div class="col-md-8">
-                <div class="row">
-                    <div class="col-md-6"><canvas id="chartTrajets"></canvas></div>
-                    <div class="col-md-6"><canvas id="chartGains"></canvas></div>
+
+            <div class="collapse show mb-4" id="collapseStats" data-bs-parent=".main-content">
+                <div class="card border-0 shadow-sm p-4">
+                    <h3 class="fw-bold text-success text-center mb-4">Statistiques Globales</h3>
+                    <div class="row g-3 mb-4">
+                        <div class="col-12 text-center">
+                            <div class="card bg-success text-white p-3 border-0">
+                                <h3>Total Crédits Gagnés</h3>
+                                <h1 class="display-4 fw-bold"><?= number_format($total_credits, 0, '.', ' '); ?></h1>
+                            </div>
+                        </div>
+                        <div class="col-md-6"><canvas id="chartTrajets"></canvas></div>
+                        <div class="col-md-6"><canvas id="chartGains"></canvas></div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-    fetch('api_stats.php')
-        .then(response => response.json())
-        .then(stats => {
-            new Chart(document.getElementById('chartTrajets'), {
-                type: 'line',
-                data: {
-                    labels: stats.labels,
-                    datasets: [{ 
-                        label: 'Covoiturages / jour', 
-                        data: stats.trajets, 
-                        borderColor: 'green',
-                        backgroundColor: 'rgba(0, 128, 0, 0.1)',
-                        fill: true
-                    }]
-                }
-            });
+            <div class="collapse mb-4" id="collapseUtilisateurs" data-bs-parent=".main-content">
+                <div class="card border-0 shadow-sm p-4">
+                    <h3 class="fw-bold text-danger text-center mb-4">Modération Utilisateurs</h3>
+                    <?php include('../components/litige_card.php') ?>
+                    
+                    <form action="profil_admin.php" method="GET" class="row g-2 mb-4 mt-2">
+                        <div class="col-md-9">
+                            <input type="text" name="nom" class="form-control" placeholder="Rechercher un nom ou prénom..." value="<?= htmlspecialchars($search ?? ''); ?>">
+                        </div>
+                        <div class="col-md-3 d-grid">
+                            <button type="submit" class="btn btn-success fw-bold">Rechercher</button>
+                        </div>
+                    </form>
 
-            new Chart(document.getElementById('chartGains'), {
-                type: 'bar',
-                data: {
-                    labels: stats.labels,
-                    datasets: [{ 
-                        label: 'Crédits gagnés / jour', 
-                        data: stats.gains, 
-                        backgroundColor: 'green' 
-                    }]
-                }
-            });
-        })
-        .catch(error => console.error('Erreur lors du chargement des stats:', error));
-    </script>
-
-<?php include('../components/litige_card.php') ?>
-
-    <div class="card border-0 shadow-sm p-3 mb-3">
-    <form action="profil_admin.php" method="GET" class="row g-2">
-        <div class="col-md-10">
-            <input type="text" name="nom" class="form-control" placeholder="Rechercher un utilisateur par nom ou prénom" value="<?php echo htmlspecialchars($search); ?>">
-        </div>
-        <div class="col-md-2 d-grid">
-            <button type="submit" class="btn btn-success fw-bold">Rechercher</button>
-        </div>
-        <?php if($search !== ''): ?>
-            <div class="col-12 mt-2">
-                <a href="profil_admin.php" class="text-decoration-none small text-muted">← Réinitialiser la recherche</a>
+                    <div class="table-responsive">
+                        <table class="table align-middle">
+                            <thead class="table-light">
+                                <tr>
+                                    <th>Nom</th>
+                                    <th>Rôle</th>
+                                    <th>Statut</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if (empty($users)): ?>
+                                    <tr><td colspan="4" class="text-center py-4">Aucun utilisateur trouvé.</td></tr>
+                                <?php else: ?>
+                                    <?php foreach($users as $u): ?>
+                                    <tr>
+                                        <td>
+                                            <div class="fw-bold"><?= htmlspecialchars($u['prenom'].' '.$u['nom']); ?></div>
+                                            <small class="text-muted"><?= htmlspecialchars($u['email']); ?></small>
+                                        </td>
+                                        <td><span class="badge bg-info text-dark"><?= ucfirst($u['role']); ?></span></td>
+                                        <td><?= ($u['est_suspendu']) ? '<span class="badge bg-danger">Suspendu</span>' : '<span class="badge bg-success">Actif</span>'; ?></td>
+                                        <td>
+                                            <a href="profil_admin.php?suspendre_id=<?= $u['utilisateur_id']; ?>" class="btn btn-sm <?= ($u['est_suspendu']) ? 'btn-success' : 'btn-danger'; ?>">
+                                                <?= ($u['est_suspendu']) ? 'Réactiver' : 'Suspendre'; ?>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
-        <?php endif; ?>
-    </form>
+        </div> 
+    </div> 
 </div>
 
-    <div class="card border-0 shadow-sm p-2 mb-5">
-        <table class="table align-middle">
-            <thead class="table-light">
-                <tr>
-                    <th>Nom</th>
-                    <th>Rôle</th>
-                    <th>Statut</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if (empty($users)): ?>
-                    <tr>
-                        <td colspan="4" class="text-center py-5">
-                            <i class="bi bi-person-x h1 text-muted"></i>
-                            <p class="mt-3">Aucun utilisateur trouvé pour "<strong><?php echo htmlspecialchars($search); ?></strong>".</p>
-                        </td>
-                    </tr>
-                <?php else: ?>
-                    <?php foreach($users as $u): ?>
-                    <tr>
-                        <td>
-                            <div class="fw-bold"><?php echo htmlspecialchars($u['prenom'].' '.$u['nom']); ?></div>
-                            <small class="text-muted"><?php echo htmlspecialchars($u['email']); ?></small>
-                        </td>
-                        <td><span class="badge bg-info text-dark"><?php echo ucfirst($u['role']); ?></span></td>
-                        <td>
-                            <?php echo ($u['est_suspendu']) ? '<span class="badge bg-danger">Suspendu</span>' : '<span class="badge bg-success">Actif</span>'; ?>
-                        </td>
-                        <td>
-                            <a href="profil_admin.php?suspendre_id=<?php echo $u['utilisateur_id']; ?>"class="btn btn-sm <?php echo ($u['est_suspendu']) ? 'btn-success' : 'btn-danger'; ?>">
-                           <?php echo ($u['est_suspendu']) ? 'Réactiver' : 'Suspendre'; ?>
-                        </a>
-                        </td>
-                    </tr>
-                    <?php endforeach; ?>
-                <?php endif; ?>
-            </tbody>
-        </table>
-    </div>
-</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+fetch('api_stats.php')
+    .then(response => response.json())
+    .then(stats => {
+        new Chart(document.getElementById('chartTrajets'), {
+            type: 'line',
+            data: {
+                labels: stats.labels,
+                datasets: [{ 
+                    label: 'Covoiturages / jour', 
+                    data: stats.trajets, 
+                    borderColor: 'green',
+                    backgroundColor: 'rgba(0, 128, 0, 0.1)',
+                    fill: true
+                }]
+            }
+    });
+
+        new Chart(document.getElementById('chartGains'), {
+            type: 'bar',
+            data: {
+                labels: stats.labels,
+                datasets: [{ 
+                    label: 'Crédits gagnés / jour', 
+                    data: stats.gains, 
+                    backgroundColor: 'green' 
+                }]
+            }
+        });
+    })
+    .catch(error => console.error('Erreur lors du chargement des stats:', error));
+</script>
 
 <footer class="bg-success text-white text-center py-3 mt-auto">
 </footer>
