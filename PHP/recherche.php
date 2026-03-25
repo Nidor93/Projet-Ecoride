@@ -65,8 +65,11 @@ $trajets = $stmt->fetchAll();
             <div class="d-flex justify-content-between align-items-center mb-4">
                 <h2 class="h4 fw-bold mb-0">Trajets disponibles</h2>
                 <?php 
-                $trajets_actifs = array_filter($trajets, function($t) {
-                    return $t['statut'] !== 'termine';
+                $trajets_actifs = array_filter($trajets, function($t) use ($user_id) {
+                    return $t['nb_place'] !== 0 
+                    && $t['reservation_trajet_id'] === null 
+                    && $t['chauffeur_id'] !== $user_id 
+                    && $t['statut'] !== 'termine';
                 });
                 ?>
                 <span class="badge bg-dark px-3 py-2">
@@ -84,6 +87,9 @@ $trajets = $stmt->fetchAll();
                     if (isset($t['statut']) && $t['statut'] === 'termine') {
                     continue; 
                     }
+                    if (isset($t['nb_place']) && $t['nb_place'] === 0) {
+                    continue;
+                    }
                     if (isset ($t['chauffeur_id']) && $t['chauffeur_id'] === $user_id) {
                     continue; 
                     }
@@ -97,7 +103,7 @@ $trajets = $stmt->fetchAll();
                     $default = ($t['sexe'] == 'F') ? '../Image/ProfilF.png' : (($t['sexe'] == 'H') ? '../Image/ProfilM.png' : '../Image/VoitureEcoride.png');
                     $img = (!empty($t['photo_profil']) && file_exists("../Image/" . $t['photo_profil'])) ? "../Image/" . $t['photo_profil'] : "../Image/" . $default;
                 ?>
-                <div class="ride-card card p-3 shadow-sm mb-3 border-0">
+                <div class="ride-card border-0 card p-3 shadow-sm mb-3 border-start border-success border-3">
                     <div class="row align-items-center">
                         <div class="col-md-2 text-center border-end">
                             <img src="<?php echo $img; ?>" class="rounded-circle img-avatar mb-2">

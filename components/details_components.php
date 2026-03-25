@@ -2,7 +2,7 @@
 
     <div class="row g-4">
         <div class="col-lg-8">
-            <div class="card border-0 shadow-sm p-4 h-100">
+            <div class="card border-0 shadow-sm p-4 h-100 border-top border-success border-4">
                 <div class="mb-4">
                     <div class="d-flex align-items-center mb-3">
                         <div class="bg-success text-white rounded-circle p-2 me-3" style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;"></div>

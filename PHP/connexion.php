@@ -13,24 +13,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$email]);
         $user = $stmt->fetch();
+        
+        $_SESSION['est_suspendu'] = $user['est_suspendu'];
+        $statut = $_SESSION['est_suspendu'];
 
-        if ($user && password_verify($password, $user['password'])) {
-            $_SESSION['utilisateur_id'] = $user['utilisateur_id'];
-            $_SESSION['role'] = strtolower(trim($user['role']));
+        if ($statut == 0 ) {
 
-            $role = $_SESSION['role'];
+            if($user && password_verify($password, $user['password'])){
+                $_SESSION['utilisateur_id'] = $user['utilisateur_id'];
+                $_SESSION['role'] = strtolower(trim($user['role']));
 
-            if ($role === 'admin') {
-                header('Location: profil_admin.php');
-            } elseif ($role === 'employe') {
-                header('Location: profil_employe.php');
+                $role = $_SESSION['role'];
+
+                switch($role) {
+                    case 'admin':
+                        header('Location: profil_admin.php');
+                    break;
+                    case 'employe':
+                        header('Location: profil_employe.php');
+                    break;
+                    case 'utilisateur':
+                        header('Location: profil.php');
+                    break;
+                    default:
+                        header('Location: connexion.php');
+                }
+
             } else {
-                header('Location: profil.php');
+                $erreur = "Email ou mot de passe incorrect.";
             }
-            exit();
-
         } else {
-            $erreur = "Email ou mot de passe incorrect.";
+            $erreur = "Votre compte est suspendu.";
         }
     } else {
         $erreur = "Veuillez remplir tous les champs.";

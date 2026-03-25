@@ -21,7 +21,7 @@ if (isset($_SESSION['utilisateur_id'])) {
             <?php if (isset($_SESSION['utilisateur_id'])): ?>
                <li class="nav-item"><a class="nav-link <?= ($page == 'profil.php') ?'active fw-bold' : ''; ?>" href="../PHP/profil.php">Mon Profil</a></li>
                <li class="nav-item">
-                   <a class="nav-link position-relative" href="messagerie.php">
+                   <a class="nav-link  <?=  ($page == 'messagerie.php') ? 'active fw-bold' : ''; ?>" href="messagerie.php">
                        <i class="bi bi-chat-dots"></i> Messagerie
                        <?php if ($non_lus > 0): ?>
                            <span class="position-absolute top-10 start-95 translate-middle badge rounded-pill bg-danger">

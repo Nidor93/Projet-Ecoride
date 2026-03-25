@@ -189,7 +189,7 @@ $mes_participations = $stmt_mes_reservations->fetchAll();
 
         <div class="col-lg-8">
             
-            <div class="card border-0 shadow-sm p-4 mb-4">
+            <div class="card border-0 shadow-sm p-4 border-bottom border-success border-4 mb-4">
                 <h4 class="fw-bold text-success mb-3 border-bottom pb-2">Mes Informations</h4>
                 <div class="row">
                     <div class="col-6 mb-2"><span class="text-muted small">Email :</span><br><strong><?php echo htmlspecialchars($user['email']); ?></strong></div>
@@ -207,7 +207,7 @@ $mes_participations = $stmt_mes_reservations->fetchAll();
                 </div>
             </div>
         <?php if ($a_une_voiture): ?>
-            <div class="card border-0 shadow-sm p-4 mb-4">
+            <div class="card border-0 shadow-sm p-4 border-bottom border-success border-4 mb-4">
                 <h4 class="fw-bold text-success mb-3 border-bottom pb-2">Mes trajets mis en ligne</h4>
                 <?php if (count($mes_trajets_proposes) > 0): ?>
                     <div class="table-responsive">
@@ -271,7 +271,7 @@ $mes_participations = $stmt_mes_reservations->fetchAll();
                 <?php endif; ?>
             </div>
             <?php endif; ?>
-            <div class="card border-0 shadow-sm p-4 mb-4">
+            <div class="card border-0 shadow-sm p-4 border-bottom border-success border-4 mb-4">
                 <h4 class="fw-bold text-success mb-3 border-bottom pb-2">Mes réservations (Passager)</h4>
                 <?php if (count($mes_participations) > 0): ?>
                     <div class="table-responsive">
@@ -330,7 +330,7 @@ $mes_participations = $stmt_mes_reservations->fetchAll();
             </div>
             
             <?php if ($user['modele']): ?>
-                <div class="card border-0 shadow-sm p-4 bg-white border-start border-success border-4 mb-4">
+                <div class="card border-0 shadow-sm p-4 bg-white border-bottom border-success border-4 mb-4">
                     <h4 class="fw-bold text-success mb-3">Véhicule Principal</h4>
                     <div class="row">
                         <div class="col-md-6">

@@ -25,7 +25,7 @@
                 <div class="col-md-6">
                     <label class="form-label fw-bold">Prix par passager</label>
                     <input type="number" name="prix" class="form-control" step="0.50" placeholder="Ex: 25" required>
-                    <div class="form-text text-danger">2 crédits seront prélevés par la plateforme sur ce prix.</div>
+                    <div class="form-text text-danger">2 crédits seront ajouter par la plateforme sur ce prix.</div>
                 </div>
                 <div class="col-md-6">
                     <label class="form-label fw-bold">Nombre de places</label>
