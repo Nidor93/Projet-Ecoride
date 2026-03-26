@@ -16,7 +16,7 @@ $co2_economise = $nb_reservations * 5;
 
 <section class="register-background py-5">
     <div class="container">
-        <div class="logregis-card mx-auto p-4 bg-white shadow rounded" style="max-width: 600px;">
+        <div class="logregis-card mx-auto p-4 bg-grey shadow rounded" style="max-width: 600px;">
             <div class="text-center mb-4">
                 <i class="bi bi-tree-fill text-success" style="font-size: 3rem;"></i>
                 <h2 class="fw-bold text-success mt-2">Impact Écologique EcoRide</h2>

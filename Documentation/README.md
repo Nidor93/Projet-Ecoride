@@ -9,6 +9,7 @@ Utilisateur mail et mot de passe : test@mail.com azertyuiop/1
 Utilisateur2 mail et mot de passe : prototype@mail.com azertyuiop/1
 Admin mail et mot de passe : admin@mail.com  Azertyuiop/1
 Employe mail et mot de passe : employe@mail.com  Azertyuiop/1
+Employe2 suspendu mail et mot de passe : t@mail.com  Azertyuiop/1
 
 
 

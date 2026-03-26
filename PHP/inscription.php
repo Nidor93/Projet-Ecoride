@@ -60,7 +60,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 <section class="register-background py-5">
     <div class="container">
-        <div class="logregis-card mx-auto p-4 bg-white shadow rounded" style="max-width: 600px;">
+        <div class="logregis-card mx-auto p-4 bg-grey shadow rounded" style="max-width: 600px;">
             <div class="text-center mb-4">
                 <h2 class="fw-bold text-success">Créer un compte</h2>
                 <p class="text-muted">Rejoignez la communauté EcoRide et recevez 20 crédits</p>

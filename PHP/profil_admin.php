@@ -2,6 +2,11 @@
 session_start();
 require_once '../db_connect.php';
 
+function addLog($pdo, $admin_id, $action, $type = null, $id_cible = null) {
+    $stmt = $pdo->prepare("INSERT INTO logs_admin (admin_id, action_realisee, cible_type, cible_id) VALUES (?, ?, ?, ?)");
+    $stmt->execute([$admin_id, $action, $type, $id_cible]);
+}
+
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     header('Location: connexion.php');
     exit();
@@ -9,9 +14,17 @@ if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
 
 if (isset($_GET['suspendre_id'])) {
     $id_a_modifier = intval($_GET['suspendre_id']);
-    
+    $admin_id = $_SESSION['utilisateur_id'];
+
+    $stmt_u = $pdo->prepare("SELECT prenom, nom FROM utilisateur WHERE utilisateur_id = ?");
+    $stmt_u->execute([$id_a_modifier]);
+    $u_info = $stmt_u->fetch();
+
     $pdo->prepare("UPDATE utilisateur SET est_suspendu = 1 - est_suspendu WHERE utilisateur_id = ?")
         ->execute([$id_a_modifier]);
+
+    $action_txt = "A modifié le statut de l'utilisateur : " . $u_info['prenom'] . " " . $u_info['nom'];
+    addLog($pdo, $admin_id, $action_txt, 'utilisateur', $id_a_modifier);
     
     header('Location: profil_admin.php?statut=success');
     exit();
@@ -104,6 +117,9 @@ $incidents = $stmt_incidents->fetchAll();
                     <button class="btn btn-success fw-bold shadow-sm" data-bs-toggle="collapse" data-bs-target="#collapseUtilisateurs">
                         <i class="bi bi-shield-lock"></i> Gérer les utilisateurs
                     </button>
+                    <button class="btn btn-warning fw-bold shadow-sm" data-bs-toggle="collapse" data-bs-target="#collapseLogs">
+                        <i class="bi bi-journal-text"></i> Historique des actions
+                    </button>
                 </div>
             </div>
         </div>
@@ -125,7 +141,7 @@ $incidents = $stmt_incidents->fetchAll();
                 </div>
             </div>
 
-            <div class="collapse show mb-4" id="collapseStats" data-bs-parent=".main-content">
+            <div class="collapse mb-4" id="collapseStats" data-bs-parent=".main-content">
                 <div class="card border-0 shadow-sm p-4">
                     <h3 class="fw-bold text-success text-center mb-4">Statistiques Globales</h3>
                     <div class="row g-3 mb-4">
@@ -141,7 +157,7 @@ $incidents = $stmt_incidents->fetchAll();
                 </div>
             </div>
 
-            <div class="collapse mb-4" id="collapseUtilisateurs" data-bs-parent=".main-content">
+            <div class="collapse show mb-4" id="collapseUtilisateurs" data-bs-parent=".main-content">
                 <div class="card border-0 shadow-sm p-4">
                     <h3 class="fw-bold text-danger text-center mb-4">Modération Utilisateurs</h3>
                     <?php include('../components/litige_card.php') ?>
@@ -190,43 +206,45 @@ $incidents = $stmt_incidents->fetchAll();
                     </div>
                 </div>
             </div>
+            <div class="collapse mb-4" id="collapseLogs" data-bs-parent=".main-content">
+                <div class="card border-0 shadow-sm p-4">
+                    <h3 class="fw-bold text-dark text-center mb-4">Journal d'activités</h3>
+                    <div class="table-responsive">
+                        <table class="table table-sm table-hover">
+                            <thead class="table-warning">
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Action</th>
+                                    <th>ID Cible</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $logs = $pdo->query("SELECT * FROM logs_admin ORDER BY date_action DESC LIMIT 20")->fetchAll();
+                                if (empty($logs)): ?>
+                                    <tr>
+                                        <td colspan="4" class="text-center py-4 text-muted">Aucune action enregistrée pour le moment.</td>
+                                    </tr>
+                                <?php else: ?>
+                                    <?php foreach($logs as $l): ?>
+                                    <tr>
+                                        <td class="small text-muted"><?= date('d/m/H:i', strtotime($l['date_action'])) ?></td>
+                                        <td><?= htmlspecialchars($l['action_realisee']) ?></td>
+                                        <td><span class="badge bg-secondary">#<?= $l['cible_id'] ?></span></td>
+                                    </tr>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div> 
     </div> 
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script>
-fetch('api_stats.php')
-    .then(response => response.json())
-    .then(stats => {
-        new Chart(document.getElementById('chartTrajets'), {
-            type: 'line',
-            data: {
-                labels: stats.labels,
-                datasets: [{ 
-                    label: 'Covoiturages / jour', 
-                    data: stats.trajets, 
-                    borderColor: 'green',
-                    backgroundColor: 'rgba(0, 128, 0, 0.1)',
-                    fill: true
-                }]
-            }
-    });
-
-        new Chart(document.getElementById('chartGains'), {
-            type: 'bar',
-            data: {
-                labels: stats.labels,
-                datasets: [{ 
-                    label: 'Crédits gagnés / jour', 
-                    data: stats.gains, 
-                    backgroundColor: 'green' 
-                }]
-            }
-        });
-    })
-    .catch(error => console.error('Erreur lors du chargement des stats:', error));
-</script>
+<script src="../JS/stats.js"></script>
 
 <footer class="bg-success text-white text-center py-3 mt-auto">
 </footer>

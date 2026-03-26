@@ -200,174 +200,24 @@ $mes_participations = $stmt_mes_reservations->fetchAll();
                 </div>
             </div>
             <div class="collapse" id="collapseInformations">
-                <div class="card card-body border-0 shadow-sm mb-4">
+                <div class="card card-body border-0 shadow-sm border-bottom border-success border-4 mb-4">
                     <h5 class="fw-bold text-success mb-3">Enregistrer de nouvelles informations</h5>
                     <?php include("../form/maj_infos_form.html"); ?>
                     
                 </div>
             </div>
         <?php if ($a_une_voiture): ?>
-            <div class="card border-0 shadow-sm p-4 border-bottom border-success border-4 mb-4">
-                <h4 class="fw-bold text-success mb-3 border-bottom pb-2">Mes trajets mis en ligne</h4>
-                <?php if (count($mes_trajets_proposes) > 0): ?>
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Itinéraire</th>
-                                    <th>Places</th>
-                                    <th>Prix</th>
-                                    <th>Annulation</th>
-                                    <th>Statut</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($mes_trajets_proposes as $tr): ?>
-                                    <tr>
-                                        <td class="small"><?php echo date('d/m/Y', strtotime($tr['date_depart'])); ?></td>
-                                        <td><strong><?php echo htmlspecialchars($tr['ville_depart']); ?></strong> → <strong><?php echo htmlspecialchars($tr['ville_arrivee']); ?></strong></td>
-                                        <td><span class="badge bg-info"><?php echo $tr['nb_place']; ?> restantes</span></td>
-                                        <td class="fw-bold"><?php echo number_format($tr['prix'], 2); ?> €</td>
-                                        <td>
-                                            <?php if ($tr['statut'] === 'attente'): ?>
-                                                <a href="supprimer_trajet.php?id=<?php echo $tr['trajet_id']; ?>" 
-                                                   class="btn btn-sm btn-outline-danger"
-                                                   onclick="return confirm('Voulez-vous vraiment annuler votre course ?')">
-                                                   Annuler
-                                                </a>
-                                            <?php else: ?>
-                                                <span class="badge bg-lock text-muted">
-                                                    <i class="bi bi-patch-check"></i> Annulation impossible
-                                                </span>
-                                            <?php endif; ?>
-                                        </td>
-                                        <td>
-                                            <?php if ($tr['statut'] == 'attente'): ?>
-                                                <a href="modifier_statut_trajet.php?id=<?php echo $tr['trajet_id']; ?>&action=demarrer" 
-                                                   class="btn btn-success btn-sm w-100 fw-bold"
-                                                   onclick="return confirm('Voulez-vous démarrer la course ?')">
-                                                   Démarrer
-                                                </a>
-
-                                            <?php elseif ($tr['statut'] == 'en_cours'): ?>
-                                                <a href="modifier_statut_trajet.php?id=<?php echo $tr['trajet_id']; ?>&action=clore" 
-                                                   class="btn btn-primary btn-sm w-100 fw-bold"
-                                                   onclick="return confirm('Êtes-vous arrivé à destination ?')">
-                                                   Arrivée à destination
-                                                </a>
-
-                                            <?php elseif ($tr['statut'] == 'termine'): ?>
-                                                <span class="badge bg-secondary w-100 p-2">Trajet clos</span>
-                                            <?php endif; ?>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                <?php else: ?>
-                    <p class="text-muted small">Vous n'avez pas encore publié de trajet.</p>
-                <?php endif; ?>
-            </div>
+            <?php include("../components/profil_tab_mes_trajets.php"); ?>
             <?php endif; ?>
-            <div class="card border-0 shadow-sm p-4 border-bottom border-success border-4 mb-4">
-                <h4 class="fw-bold text-success mb-3 border-bottom pb-2">Mes réservations (Passager)</h4>
-                <?php if (count($mes_participations) > 0): ?>
-                    <div class="table-responsive">
-                        <table class="table table-hover align-middle">
-                            <thead class="table-light">
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Itinéraire</th>
-                                    <th>Chauffeur</th>
-                                    <th>Statut</th>
-                                    <th>Détails</th>
-                                    <th>Annulation</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php foreach ($mes_participations as $res): ?>
-                                    <tr>
-                                        <td class="small"><?php echo date('d/m/Y', strtotime($res['date_depart'])); ?></td>
-                                        <td><strong><?php echo htmlspecialchars($res['ville_depart']); ?></strong> → <strong><?php echo htmlspecialchars($res['ville_arrivee']); ?></strong></td>
-                                        <td><?php echo htmlspecialchars($res['chauffeur_nom']); ?></td>
-                                        <td class="fw-bold">
-                                            <?php if ($res['statut'] == 'attente'): ?>
-                                                <p class="mb-1">En attente</p>
 
-                                            <?php elseif ($res['statut'] == 'en_cours'): ?>
-                                                <p class="mb-1">Voyage en cours</p>
-
-                                            <?php elseif ($res['statut'] == 'termine'): ?>
-                                                <p class="mb-1">Trajet clos</p>
-                                            <?php endif; ?>
-                                        </td>
-                                        <td class="fw-bold text-success">
-                                            <a href="details_reservation.php?id=<?php echo $res['trajet_id']; ?>" class="btn btn-success btn-sm w-100 fw-bold"> Détails </a>
-                                        </td>
-                                        <td>
-                                            <?php if ($res['statut'] === 'attente'): ?>
-                                                <a href="supprimer_trajet.php?id=<?php echo $res['trajet_id']; ?>" 
-                                                   class="btn btn-sm btn-outline-danger"
-                                                   onclick="return confirm('Voulez-vous vraiment annuler votre réservation ? (2 crédits seront prélevés de votre compte)')">
-                                                   Annuler
-                                                </a>
-                                            <?php else: ?>
-                                                <span class="badge bg-lock text-muted">
-                                                    <i class="bi bi-patch-check"></i> Annulation impossible
-                                                </span>
-                                            <?php endif; ?>
-                                        </td>
-                                    </tr>
-                                <?php endforeach; ?>
-                            </tbody>
-                        </table>
-                    </div>
-                <?php else: ?>
-                    <p class="text-muted small">Vous n'avez pas encore réservé de voyage.</p>
-                <?php endif; ?>
-            </div>
+            <?php include("../components/profil_tab_mes_reservations.php"); ?>
             
             <?php if ($user['modele']): ?>
-                <div class="card border-0 shadow-sm p-4 bg-white border-bottom border-success border-4 mb-4">
-                    <h4 class="fw-bold text-success mb-3">Véhicule Principal</h4>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <p class="mb-1"><strong>Modèle :</strong> <?php echo htmlspecialchars($user['modele']); ?></p>
-                            <p class="mb-1"><strong>Immatriculation :</strong> <?php echo htmlspecialchars($user['immatriculation']); ?></p>
-                        </div>
-                        <div class="col-md-6">
-                            <span class="badge <?php echo $user['pref_fumeur'] ? 'bg-success' : 'bg-secondary'; ?>">Fumeur : <?php echo $user['pref_fumeur'] ? 'OK' : 'NON'; ?></span>
-                            <span class="badge <?php echo $user['pref_animal'] ? 'bg-success' : 'bg-secondary'; ?>">Animaux : <?php echo $user['pref_animal'] ? 'OK' : 'NON'; ?></span>
-                            <?php if (!empty($v['categorie'])): ?>
-                                    <p class="mt-3 mb-0 small text-muted italic">
-                                        <i class="bi bi-chat-dots"></i> "<?php echo htmlspecialchars($v['categorie']); ?>"
-                                    </p>
-                            <?php endif; ?>
-                            <div class="mt-2 text-end">
-                                <a href="supprimer_voiture.php?id=<?php echo $mes_voitures[0]['voiture_id']; ?>" 
-                                    class="btn btn-sm btn-outline-danger"
-                                    onclick="return confirm('Voulez-vous vraiment supprimer votre véhicule ?')">
-                                    Supprimer Véhicule
-                                </a>
-                            </div>
-                            <div class="mt-2 text-end">
-                                <button class="btn btn-sm btn-success" data-bs-toggle="collapse" data-bs-target="#collapseVoitureUpdate">Changer les informations du véhicule ?</button>
-                            </div>
-                        </div>
-                        <div class="collapse" id="collapseVoitureUpdate">
-                            <div class="card card-body border-0 shadow-sm mb-4">
-                                <h5 class="fw-bold text-success mb-3">Mise à jour des informations du véhicule</h5>
-                                <?php include("../form/maj_infos_voiture_form.html"); ?>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <?php include("../components/profil_tab_ma_voiture.php"); ?>
             <?php endif; ?>
 
             <div class="collapse" id="collapseVoiture">
-                <div class="card card-body border-0 shadow-sm mb-4">
+                <div class="card card-body border-0 shadow-sm border-bottom border-success border-4 mb-4">
                     <h5 class="fw-bold text-success mb-3">Enregistrer un nouveau véhicule</h5>
                     <?php include("../form/nouveau_vehicule_form.html"); ?>
                 </div>

@@ -2,6 +2,11 @@
 session_start();
 require_once '../db_connect.php';
 
+function addLog($pdo, $admin_id, $action, $type = null, $id_cible = null) {
+    $stmt = $pdo->prepare("INSERT INTO logs_admin (admin_id, action_realisee, cible_type, cible_id) VALUES (?, ?, ?, ?)");
+    $stmt->execute([$admin_id, $action, $type, $id_cible]);
+}
+
 if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
     header('Location: connexion.php');
     exit();
@@ -34,6 +39,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 VALUES (?, ?, ?, ?, ?, 0)";
         $stmt = $pdo->prepare($sql);
         $stmt->execute([$nom, $prenom, $email, $password_hash, $role]);
+
+        $nouvel_id = $pdo->lastInsertId();
+        $admin_id = $_SESSION['utilisateur_id'];
+        $action_txt = "Création du compte employé : $prenom $nom ($email)";
+        
+        addLog($pdo, $admin_id, $action_txt, 'utilisateur', $nouvel_id);
 
         header('Location: profil_admin.php?success=employe_cree');
         exit();

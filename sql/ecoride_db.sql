@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : jeu. 19 mars 2026 à 14:19
+-- Généré le : mer. 25 mars 2026 à 14:03
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -58,6 +58,29 @@ INSERT INTO `avis` (`avis_id`, `passager_id`, `utilisateur_id`, `trajet_id`, `co
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `logs_admin`
+--
+
+CREATE TABLE `logs_admin` (
+  `log_id` int(11) NOT NULL,
+  `admin_id` int(11) NOT NULL,
+  `action_realisee` varchar(255) NOT NULL,
+  `date_action` datetime DEFAULT current_timestamp(),
+  `cible_type` varchar(50) DEFAULT NULL,
+  `cible_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `logs_admin`
+--
+
+INSERT INTO `logs_admin` (`log_id`, `admin_id`, `action_realisee`, `date_action`, `cible_type`, `cible_id`) VALUES
+(6, 9, 'Création du compte employé : t t (t@mail.com)', '2026-03-25 14:03:11', 'utilisateur', 30),
+(7, 9, 'A modifié le statut de l\'utilisateur : t t', '2026-03-25 14:03:17', 'utilisateur', 30);
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `messagerie`
 --
 
@@ -77,7 +100,8 @@ CREATE TABLE `messagerie` (
 
 INSERT INTO `messagerie` (`message_id`, `trajet_id`, `expediteur_id`, `destinataire_id`, `contenu`, `date_envoi`, `est_lu`) VALUES
 (23, 26, 26, 8, 'Renseignements', '2026-03-19 14:04:12', 0),
-(24, 26, 8, 26, 'renseignements....', '2026-03-19 14:06:17', 1);
+(24, 26, 8, 26, 'renseignements....', '2026-03-19 14:06:17', 0),
+(25, 6, 8, 6, 'renseignements\r\nre', '2026-03-19 14:50:18', 0);
 
 -- --------------------------------------------------------
 
@@ -170,7 +194,8 @@ INSERT INTO `utilisateur` (`utilisateur_id`, `nom`, `prenom`, `sexe`, `email`, `
 (8, 'Test', 'Test', 'H', 'test@mail.com', '$2y$10$qp1d5IF/xkRV0/94TdZ84eNgu1OI7zXySGmBtRqCc1ZjwSDSrU93K', 'profil_8_1772719861.jpg', 987, 'utilisateur', 0, 123456788),
 (9, 'TestAdmin', 'Admin', 'H', 'admin@mail.com', '$2y$10$.Hdvq/tPSHt3ptQNexM.5en1mACC9V7Z6uHTiaLXGEupmzm16lDly', NULL, 20, 'admin', 0, 123456789),
 (10, 'TestEmploye', 'Employe', 'H', 'employe@mail.com', '$2y$10$yrhUsueibtee93UYN/gsO.8nIHakEq2RN/ZgCNv9gwde132hwIlSm', NULL, 20, 'employe', 0, 123456789),
-(26, 'Prototype', 'Test', 'Autre', 'prototype@mail.com', '$2y$10$GhPh59APR4EYZiYJUhAZXutkyYfvzcWrCJWkpfBVeEC0JGDWs3Bnm', NULL, 947, 'utilisateur', 0, 123456788);
+(26, 'Prototype', 'Test', 'Autre', 'prototype@mail.com', '$2y$10$GhPh59APR4EYZiYJUhAZXutkyYfvzcWrCJWkpfBVeEC0JGDWs3Bnm', NULL, 947, 'utilisateur', 0, 123456788),
+(30, 't', 't', NULL, 't@mail.com', '$2y$10$4U4H3k2EfmQjpNVJfsvp7uOfH6TmSINPWvVm4ZWq3a412k21qmsqW', NULL, 20, 'employe', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -218,6 +243,13 @@ ALTER TABLE `avis`
   ADD PRIMARY KEY (`avis_id`),
   ADD KEY `passager_id` (`passager_id`),
   ADD KEY `chauffeur_id` (`utilisateur_id`);
+
+--
+-- Index pour la table `logs_admin`
+--
+ALTER TABLE `logs_admin`
+  ADD PRIMARY KEY (`log_id`),
+  ADD KEY `admin_id` (`admin_id`);
 
 --
 -- Index pour la table `messagerie`
@@ -268,10 +300,16 @@ ALTER TABLE `avis`
   MODIFY `avis_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
+-- AUTO_INCREMENT pour la table `logs_admin`
+--
+ALTER TABLE `logs_admin`
+  MODIFY `log_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
 -- AUTO_INCREMENT pour la table `messagerie`
 --
 ALTER TABLE `messagerie`
-  MODIFY `message_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `message_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
 
 --
 -- AUTO_INCREMENT pour la table `reservation`
@@ -289,7 +327,7 @@ ALTER TABLE `trajet`
 -- AUTO_INCREMENT pour la table `utilisateur`
 --
 ALTER TABLE `utilisateur`
-  MODIFY `utilisateur_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `utilisateur_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT pour la table `voiture`
@@ -300,6 +338,12 @@ ALTER TABLE `voiture`
 --
 -- Contraintes pour les tables déchargées
 --
+
+--
+-- Contraintes pour la table `logs_admin`
+--
+ALTER TABLE `logs_admin`
+  ADD CONSTRAINT `logs_admin_ibfk_1` FOREIGN KEY (`admin_id`) REFERENCES `utilisateur` (`utilisateur_id`);
 
 --
 -- Contraintes pour la table `messagerie`
