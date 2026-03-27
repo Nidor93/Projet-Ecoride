@@ -9,117 +9,84 @@ if (!isset($_SESSION['utilisateur_id']) || $_SESSION['role'] !== 'utilisateur') 
     exit;
 }
 
-$user_id = $_SESSION['utilisateur_id'] ?? null;
+$user_id = $_SESSION['utilisateur_id'];
+
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $email = $_POST['email'];
-    $numero = $_POST['telephone'];
-    $user_id = $_SESSION['utilisateur_id'] ?? null;
+    
+    if (isset($_POST['email']) && isset($_POST['telephone'])) {
+        $email = $_POST['email'];
+        $numero = $_POST['telephone'];
 
-    if (!empty($email) && !empty($numero)) {
-        try { 
-            $sql_ins = "UPDATE utilisateur 
-                        SET email = ?, telephone = ? 
-                        WHERE utilisateur_id = ?";
-
-            $stmt_ins = $pdo->prepare($sql_ins);
-            $stmt_ins->execute([
-                $email, 
-                $numero, 
-                $user_id
-            ]);
-            
-            header("Location: profil.php?succes=1");
-            exit;
-        } catch (PDOException $e) {
-            $error_db = "Erreur lors de l'enregistrement : " . $e->getMessage();
+        if (!empty($email) && !empty($numero)) {
+            try { 
+                $sql = "UPDATE utilisateur SET email = ?, telephone = ? WHERE utilisateur_id = ?";
+                $pdo->prepare($sql)->execute([$email, $numero, $user_id]);
+                header("Location: profil.php?succes=1");
+                exit;
+            } catch (PDOException $e) {
+                $error_db = "Erreur profil : " . $e->getMessage();
+            }
         }
-    } else {
-        $error_form = "Veuillez remplir les champs obligatoires.";
+    }
+
+    if (isset($_POST['ajouter_auto']) || isset($_POST['modele'])) {
+        $modele = trim($_POST['modele']);
+        $immatriculation = trim($_POST['immatriculation']);
+        $couleur = trim($_POST['couleur']);
+        $date_immat = $_POST['date_immat'];
+        $places = (int)$_POST['places'];
+        $pref_fumeur = isset($_POST['pref_fumeur']) ? 1 : 0;
+        $pref_animal = isset($_POST['pref_animal']) ? 1 : 0;
+        $categorie = trim($_POST['categorie']);
+        $est_electrique = isset($_POST['est_electrique']) ? 1 : 0;
+
+        if (!empty($modele) && !empty($immatriculation)) {
+            try {
+                $check = $pdo->prepare("SELECT voiture_id FROM voiture WHERE utilisateur_id = ?");
+                $check->execute([$user_id]);
+                $voiture_existante = $check->fetch();
+
+                if ($voiture_existante) {
+                    $sql = "UPDATE voiture SET modele = ?, immatriculation = ?, couleur = ?, date_immatriculation = ?, places_disponibles = ?, pref_fumeur = ?, pref_animal = ?, categorie = ?, est_electrique = ? WHERE utilisateur_id = ?";
+                    $params = [$modele, $immatriculation, $couleur, $date_immat, $places, $pref_fumeur, $pref_animal, $categorie, $est_electrique, $user_id];
+                } else {
+                    $sql = "INSERT INTO voiture (modele, immatriculation, couleur, date_immatriculation, places_disponibles, pref_fumeur, pref_animal, categorie, est_electrique, utilisateur_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    $params = [$modele, $immatriculation, $couleur, $date_immat, $places, $pref_fumeur, $pref_animal, $categorie, $est_electrique, $user_id];
+                }
+
+                $pdo->prepare($sql)->execute($params);
+                header("Location: profil.php?succes=1");
+                exit;
+
+            } catch (PDOException $e) {
+                $error_db = "Erreur véhicule : " . $e->getMessage();
+            }
+        } else {
+            $error_form = "Veuillez remplir les champs obligatoires.";
+        }
     }
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $modele = trim($_POST['modele']);
-    $immatriculation = trim($_POST['immatriculation']);
-    $couleur = trim($_POST['couleur']);
-    $date_immat = $_POST['date_immat'];
-    $places = (int)$_POST['places'];
-    $pref_fumeur = isset($_POST['pref_fumeur']) ? 1 : 0;
-    $pref_animal = isset($_POST['pref_animal']) ? 1 : 0;
-    $categorie = trim($_POST['categorie']);
-    $est_electrique = isset($_POST['est_electrique']) ? 1 : 0;
-    $user_id = $_SESSION['utilisateur_id'] ?? null;
-
-
-    if (!empty($modele) && !empty($immatriculation)) {
-        try {
-            $sql_ins = "UPDATE voiture
-                        SET modele = ?, immatriculation = ?, couleur= ?, date_immat= ?, places = ?, pref_fumeur = ?, pref_animal = ?, categorie = ?, est_electrique = ? 
-                        WHERE utilisateur_id = ?";
-
-            $stmt_ins = $pdo->prepare($sql_ins);
-            $stmt_ins->execute([
-                $modele, $couleur, $immatriculation, $date_immat, 
-                $places, $pref_fumeur, $pref_animal, $categorie, $est_electrique, $user_id
-            ]);
-            
-            header("Location: profil.php?succes=1");
-            exit;
-        } catch (PDOException $e) {
-            $error_db = "Erreur lors de l'enregistrement : " . $e->getMessage();
-        }
-    } else {
-        $error_form = "Veuillez remplir les champs obligatoires.";
-    }
-}
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ajouter_auto'])) {
-    $modele = trim($_POST['modele']);
-    $immatriculation = trim($_POST['immatriculation']);
-    $couleur = trim($_POST['couleur']);
-    $date_immat = $_POST['date_immat'];
-    $places = (int)$_POST['places'];
-    $pref_fumeur = isset($_POST['pref_fumeur']) ? 1 : 0;
-    $pref_animal = isset($_POST['pref_animal']) ? 1 : 0;
-    $categorie = trim($_POST['categorie']);
-    $est_electrique = isset($_POST['est_electrique']) ? 1 : 0;
-
-    if (!empty($modele) && !empty($immatriculation)) {
-        try {
-            $sql_ins = "INSERT INTO voiture (modele, couleur, immatriculation, date_immatriculation, 
-                        places_disponibles, pref_fumeur, pref_animal, categorie, est_electrique, utilisateur_id) 
-                        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            $stmt_ins = $pdo->prepare($sql_ins);
-            $stmt_ins->execute([
-                $modele, $couleur, $immatriculation, $date_immat, 
-                $places, $pref_fumeur, $pref_animal, $categorie, $est_electrique, $user_id
-            ]);
-            
-            header("Location: profil.php?succes=1");
-            exit;
-        } catch (PDOException $e) {
-            $error_db = "Erreur lors de l'enregistrement : " . $e->getMessage();
-        }
-    } else {
-        $error_form = "Veuillez remplir les champs obligatoires.";
-    }
-}
-
-$sql_user = "SELECT u.*, v.*,
-            (SELECT AVG(note) FROM avis WHERE utilisateur_id = u.utilisateur_id AND est_valide = 1) as note_moyenne,
-            (SELECT COUNT(*) FROM avis WHERE utilisateur_id = u.utilisateur_id AND est_valide = 1) as nb_avis
-            FROM utilisateur u
-            LEFT JOIN voiture v ON u.utilisateur_id = v.utilisateur_id
-            WHERE u.utilisateur_id = ? LIMIT 1";
-
-$stmt_user = $pdo->prepare($sql_user);
-$stmt_user->execute([$user_id]);
-$user = $stmt_user->fetch();
 
 if (!$user) {
     die("Erreur : Impossible de charger votre profil.");
 }
+
+$sql_user = "SELECT u.*, 
+            v.voiture_id AS vehicule_id, 
+            v.modele, v.immatriculation, v.couleur, v.date_immatriculation, 
+            v.places_disponibles, v.pref_fumeur, v.pref_animal, v.categorie, v.est_electrique,
+            (SELECT AVG(note) FROM avis WHERE utilisateur_id = u.utilisateur_id AND est_valide = 1) as note_moyenne,
+            (SELECT COUNT(*) FROM avis WHERE utilisateur_id = u.utilisateur_id AND est_valide = 1) as nb_avis
+            FROM utilisateur u
+            LEFT JOIN voiture v ON u.utilisateur_id = v.utilisateur_id
+            WHERE u.utilisateur_id = ? 
+            ORDER BY v.voiture_id DESC LIMIT 1"; 
+
+$stmt_user = $pdo->prepare($sql_user);
+$stmt_user->execute([$user_id]);
+$user = $stmt_user->fetch();
 
 $stmt_voitures = $pdo->prepare("SELECT * FROM voiture WHERE utilisateur_id = ?");
 $stmt_voitures->execute([$user_id]);
@@ -213,7 +180,40 @@ $mes_participations = $stmt_mes_reservations->fetchAll();
             <?php include("../components/profil_tab_mes_reservations.php"); ?>
             
             <?php if ($user['modele']): ?>
-                <?php include("../components/profil_tab_ma_voiture.php"); ?>
+                <div class="card border-0 shadow-sm p-4 bg-white border-bottom border-success border-4 mb-4">
+                    <h4 class="fw-bold text-success mb-3">Véhicule Principal</h4>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <p class="mb-1"><strong>Modèle :</strong> <?php echo htmlspecialchars($user['modele']); ?></p>
+                            <p class="mb-1"><strong>Immatriculation :</strong> <?php echo htmlspecialchars($user['immatriculation']); ?></p>
+                        </div>
+                        <div class="col-md-6">
+                            <span class="badge <?php echo $user['pref_fumeur'] ? 'bg-success' : 'bg-secondary'; ?>">Fumeur : <?php echo $user['pref_fumeur'] ? 'OK' : 'NON'; ?></span>
+                            <span class="badge <?php echo $user['pref_animal'] ? 'bg-success' : 'bg-secondary'; ?>">Animaux : <?php echo $user['pref_animal'] ? 'OK' : 'NON'; ?></span>
+                            <?php if (!empty($v['categorie'])): ?>
+                                    <p class="mt-3 mb-0 small text-muted italic">
+                                        <i class="bi bi-chat-dots"></i> "<?php echo htmlspecialchars($v['categorie']); ?>"
+                                    </p>
+                            <?php endif; ?>
+                            <div class="mt-2 text-end">
+                                <a href="supprimer_voiture.php?id=<?= $user['vehicule_id'] ?? $user['id_voiture_form'] ?? ''; ?>" 
+                                   class="btn btn-sm btn-outline-danger"
+                                   onclick="return confirm('Attention : Cela annulera vos trajets en cours. Confirmer ?')">
+                                   <i class="bi bi-trash"></i> Supprimer ce véhicule
+                                </a>
+                            </div>
+                            <div class="mt-2 text-end">
+                                <button class="btn btn-sm btn-success" data-bs-toggle="collapse" data-bs-target="#collapseVoitureUpdate">Changer les informations du véhicule ?</button>
+                            </div>
+                        </div>
+                        <div class="collapse" id="collapseVoitureUpdate">
+                            <div class="card card-body border-0 shadow-sm mb-4">
+                                <h5 class="fw-bold text-success mb-3">Mise à jour des informations du véhicule</h5>
+                                <?php include("../form/maj_infos_voiture_form.php"); ?>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             <?php endif; ?>
 
             <div class="collapse" id="collapseVoiture">

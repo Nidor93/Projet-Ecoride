@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : mer. 25 mars 2026 à 14:03
+-- Généré le : ven. 27 mars 2026 à 12:04
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -50,10 +50,11 @@ INSERT INTO `avis` (`avis_id`, `passager_id`, `utilisateur_id`, `trajet_id`, `co
 (29, 2, 5, 0, 'Bon voyage.', 4, 1, 4),
 (30, 1, 6, 0, 'Je recommande !', 5, 1, 3),
 (34, 8, 3, 3, 'super sympa', 4, 0, 4),
-(35, 1, 8, 6, 'Voiture miteuse', 1, 0, 1),
+(35, 1, 6, 6, 'Voiture miteuse', 1, 0, 1),
 (37, 4, 8, 2, 'très désagréable', 2, 0, 2),
 (38, 2, 8, 18, 'Correct', 3, 1, 3),
-(41, 8, 6, 6, 'incroyable', 5, 1, 5);
+(41, 8, 6, 6, 'incroyable', 5, 1, 5),
+(51, 26, 8, 27, 'Gros problemes de retard', 1, 0, 1);
 
 -- --------------------------------------------------------
 
@@ -99,9 +100,8 @@ CREATE TABLE `messagerie` (
 --
 
 INSERT INTO `messagerie` (`message_id`, `trajet_id`, `expediteur_id`, `destinataire_id`, `contenu`, `date_envoi`, `est_lu`) VALUES
-(23, 26, 26, 8, 'Renseignements', '2026-03-19 14:04:12', 0),
-(24, 26, 8, 26, 'renseignements....', '2026-03-19 14:06:17', 0),
-(25, 6, 8, 6, 'renseignements\r\nre', '2026-03-19 14:50:18', 0);
+(25, 6, 8, 6, 'renseignements\r\nre', '2026-03-19 14:50:18', 0),
+(29, 27, 26, 8, 'Bonjour besoin de renseignements svp', '2026-03-26 15:15:59', 0);
 
 -- --------------------------------------------------------
 
@@ -124,7 +124,7 @@ CREATE TABLE `reservation` (
 
 INSERT INTO `reservation` (`reservation_id`, `utilisateur_id`, `trajet_id`, `date_reservation`, `statut`, `commission_credit`) VALUES
 (17, 8, 6, '2026-01-16 12:20:50', 'attente', 2.00),
-(33, 26, 26, '2026-03-18 14:23:51', 'attente', 2.00);
+(34, 26, 27, '2026-03-26 15:15:31', 'attente', 2.00);
 
 -- --------------------------------------------------------
 
@@ -158,7 +158,7 @@ INSERT INTO `trajet` (`trajet_id`, `ville_depart`, `ville_arrivee`, `date_depart
 (5, 'Lyon', 'Paris', '2025-10-29', '04:00:00', 10.00, 2, 5, '09:00:00', 2, 'attente'),
 (6, 'Lille', 'Marseille', '2025-10-30', '05:00:00', 70.00, 3, 6, '14:00:00', 1, 'attente'),
 (18, 'test', 'test', '2026-01-12', '00:00:00', 12.00, 0, 8, '01:00:00', 10, 'termine'),
-(26, 'Paris', 'Lyon', '2026-03-12', '00:00:00', 50.00, 0, 8, '07:00:00', 21, 'attente');
+(27, 'Paris', 'Lyon', '2026-03-26', '01:30:00', 50.00, 2, 8, '09:00:00', 32, 'attente');
 
 -- --------------------------------------------------------
 
@@ -191,10 +191,10 @@ INSERT INTO `utilisateur` (`utilisateur_id`, `nom`, `prenom`, `sexe`, `email`, `
 (4, 'N.', 'Marie', 'F', 'marie.n@exemple.com', 'hash_password_4', NULL, 20, 'utilisateur', 0, 123456789),
 (5, 'H.', 'Teo', 'Autre', 'teo.h@exemple.com', 'hash_password_5', NULL, 20, 'utilisateur', 0, 123456789),
 (6, 'D.', 'Baptiste', 'H', 'baptiste.d@exemple.com', 'hash_password_6', NULL, 20, 'utilisateur', 0, 123456789),
-(8, 'Test', 'Test', 'H', 'test@mail.com', '$2y$10$qp1d5IF/xkRV0/94TdZ84eNgu1OI7zXySGmBtRqCc1ZjwSDSrU93K', 'profil_8_1772719861.jpg', 987, 'utilisateur', 0, 123456788),
+(8, 'Test', 'Test', 'H', 'test@mail.com', '$2y$10$qp1d5IF/xkRV0/94TdZ84eNgu1OI7zXySGmBtRqCc1ZjwSDSrU93K', 'profil_8_1772719861.jpg', 987, 'utilisateur', 0, 111111111),
 (9, 'TestAdmin', 'Admin', 'H', 'admin@mail.com', '$2y$10$.Hdvq/tPSHt3ptQNexM.5en1mACC9V7Z6uHTiaLXGEupmzm16lDly', NULL, 20, 'admin', 0, 123456789),
 (10, 'TestEmploye', 'Employe', 'H', 'employe@mail.com', '$2y$10$yrhUsueibtee93UYN/gsO.8nIHakEq2RN/ZgCNv9gwde132hwIlSm', NULL, 20, 'employe', 0, 123456789),
-(26, 'Prototype', 'Test', 'Autre', 'prototype@mail.com', '$2y$10$GhPh59APR4EYZiYJUhAZXutkyYfvzcWrCJWkpfBVeEC0JGDWs3Bnm', NULL, 947, 'utilisateur', 0, 123456788),
+(26, 'Prototype', 'Test', 'Autre', 'prototype@mail.com', '$2y$10$GhPh59APR4EYZiYJUhAZXutkyYfvzcWrCJWkpfBVeEC0JGDWs3Bnm', NULL, 895, 'utilisateur', 0, 123456788),
 (30, 't', 't', NULL, 't@mail.com', '$2y$10$4U4H3k2EfmQjpNVJfsvp7uOfH6TmSINPWvVm4ZWq3a412k21qmsqW', NULL, 20, 'employe', 1, NULL);
 
 -- --------------------------------------------------------
@@ -215,7 +215,7 @@ CREATE TABLE `voiture` (
   `pref_fumeur` tinyint(1) DEFAULT 0,
   `pref_animal` tinyint(1) DEFAULT 0,
   `places_disponibles` int(11) NOT NULL DEFAULT 3,
-  `categorie` varchar(50) DEFAULT NULL
+  `categorie` varchar(150) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -229,8 +229,8 @@ INSERT INTO `voiture` (`voiture_id`, `utilisateur_id`, `marque`, `modele`, `imma
 (4, 4, '', 'Mercedes-Benz AMG G 65', 'YE-974-WP', NULL, 'Noire', 0, 0, 0, 3, 'Pas de nourriture'),
 (5, 5, '', 'Tesla Model 3', 'RH-862-ZH', NULL, 'Noire', 1, 0, 0, 3, 'Pas de nourriture'),
 (6, 6, '', 'Renault Clio 5', 'GH-646-EZ', NULL, 'Rouge', 0, 0, 0, 3, 'Pas de nourriture'),
-(21, 8, '', 'Tesla Model 3', 'ER-785-DF', '2016-06-12', '', 1, 0, 1, 3, 'Pas de nourritures'),
-(22, 26, '', 'Tesla Model 3', 'FR-652-GH', '2022-06-11', '', 1, 1, 1, 3, '');
+(32, 8, '', 'Tesla Model 3', 'ER-785-DF', '2001-02-02', '', 1, 1, 1, 3, 'Pas de nourriture'),
+(33, 26, '', 'Tesla Model 3', '00-000-00', '2006-03-02', '', 1, 0, 1, 3, 'Je transporte tout le temps un barbecue dans mon coffre');
 
 --
 -- Index pour les tables déchargées
@@ -297,7 +297,7 @@ ALTER TABLE `voiture`
 -- AUTO_INCREMENT pour la table `avis`
 --
 ALTER TABLE `avis`
-  MODIFY `avis_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
+  MODIFY `avis_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
 
 --
 -- AUTO_INCREMENT pour la table `logs_admin`
@@ -309,19 +309,19 @@ ALTER TABLE `logs_admin`
 -- AUTO_INCREMENT pour la table `messagerie`
 --
 ALTER TABLE `messagerie`
-  MODIFY `message_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `message_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- AUTO_INCREMENT pour la table `reservation`
 --
 ALTER TABLE `reservation`
-  MODIFY `reservation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `reservation_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT pour la table `trajet`
 --
 ALTER TABLE `trajet`
-  MODIFY `trajet_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `trajet_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT pour la table `utilisateur`
@@ -333,7 +333,7 @@ ALTER TABLE `utilisateur`
 -- AUTO_INCREMENT pour la table `voiture`
 --
 ALTER TABLE `voiture`
-  MODIFY `voiture_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `voiture_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
 
 --
 -- Contraintes pour les tables déchargées

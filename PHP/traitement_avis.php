@@ -31,3 +31,18 @@ if (isset($_POST['submit_avis']) && isset($_SESSION['utilisateur_id'])) {
     }
 }
 header("Location: profil.php");
+
+if(isset($_POST['submit_signalement'])) {
+    $stmt = $pdo->prepare("INSERT INTO avis (passager_id, utilisateur_id, trajet_id, commentaire, note, est_valide, etoiles) 
+                           VALUES (?, ?, ?, ?, ?, ?, ?)");
+    
+    $stmt->execute([
+        $_POST['passager_id'],
+        $_POST['utilisateur_id'],
+        $_POST['trajet_id'],
+        $_POST['commentaire'],
+        1, 0, 1
+    ]);
+    
+    header('Location: chat.php?id=' . $_POST['trajet_id'] . '&success=signalement_envoye');
+}

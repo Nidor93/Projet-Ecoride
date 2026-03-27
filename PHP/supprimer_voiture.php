@@ -2,64 +2,44 @@
 session_start();
 require_once '../db_connect.php';
 
-if (!isset($_SESSION['utilisateur_id']) || !isset($_GET['id'])) {
-    header('Location: profil.php');
-    exit;
-}
+$id_voiture = isset($_GET['id']) ? intval($_GET['id']) : 0;
+$user_id = $_SESSION['utilisateur_id'] ?? 0;
 
-$id_cible = intval($_GET['id']);
-$user_id = $_SESSION['utilisateur_id'];
+if ($id_voiture <= 0 || $user_id <= 0) {
+    die("Erreur : Paramètres invalides.");
+}
 
 try {
     $pdo->beginTransaction();
 
-    $stmt_chef = $pdo->prepare("SELECT * FROM voiture WHERE voiture_id = ? AND utilisateur_id = ?");
-    $stmt_chef->execute([$id_cible, $user_id]);
-    $voiture_utilisateur = $stmt_chef->fetch();
-
-    if ($voiture_utilisateur) {
-        $stmt_p = $pdo->prepare("SELECT DISTINCT u.utilisateur_id, u.email, t.ville_depart, t.ville_arrivee
-                                 FROM reservation r
-                                 JOIN trajet t ON r.trajet_id = t.trajet_id
-                                 JOIN utilisateur u ON r.utilisateur_id = u.utilisateur_id
-                                 WHERE t.voiture_id = ?");
-        $stmt_p->execute([$id_cible]);
-        $passagers = $stmt_p->fetchAll();
-
-        $stmt_rembourse = $pdo->prepare("UPDATE utilisateur SET credit = credit + 2 WHERE utilisateur_id = ?");
-
-        foreach ($passagers as $p) {
-            $stmt_rembourse->execute([$p['utilisateur_id']]);
-
-            $to = $p['email'];
-            $subject = "Annulation de votre trajet EcoRide";
-            $message = "Bonjour, \n\nLe trajet " . htmlspecialchars($p['ville_depart']) . " - " . htmlspecialchars($p['ville_arrivee']) . " a été annulé car le chauffeur a supprimé son véhicule. Vos crédits ont été remboursés.";
-            @mail($to, $subject, $message, "From: ne-pas-repondre@ecoride.fr");
-        }
-
-        $del_res = $pdo->prepare("DELETE FROM reservation WHERE trajet_id IN (SELECT trajet_id FROM trajet WHERE voiture_id = ?)");
-        $del_res->execute([$id_cible]);
-
-        $del_trajets = $pdo->prepare("DELETE FROM trajet WHERE voiture_id = ?");
-        $del_trajets->execute([$id_cible]);
-
-        $del_voiture = $pdo->prepare("DELETE FROM voiture WHERE voiture_id = ?");
-        $del_voiture->execute([$id_cible]);
-
-        $pdo->commit();
-        $msg = "succes=suppression_validee";
-
-    } else {
-        $msg = "error=erreur_proprietaire";
+    $stmt = $pdo->prepare("SELECT voiture_id FROM voiture WHERE voiture_id = ? AND utilisateur_id = ?");
+    $stmt->execute([$id_voiture, $user_id]);
+    if (!$stmt->fetch()) {
+        die("Erreur : Ce véhicule ne vous appartient pas.");
     }
-    
-    header("Location: profil.php?$msg");
+
+    $sql_msg = "DELETE FROM messagerie WHERE trajet_id IN (SELECT trajet_id FROM trajet WHERE voiture_id = ?)";
+    $pdo->prepare($sql_msg)->execute([$id_voiture]);
+
+    $sql_avis = "DELETE FROM avis WHERE trajet_id IN (SELECT trajet_id FROM trajet WHERE voiture_id = ?)";
+    $pdo->prepare($sql_avis)->execute([$id_voiture]);
+
+    $sql_res = "DELETE FROM reservation WHERE trajet_id IN (SELECT trajet_id FROM trajet WHERE voiture_id = ?)";
+    $pdo->prepare($sql_res)->execute([$id_voiture]);
+
+    $sql_trajets = "DELETE FROM trajet WHERE voiture_id = ?";
+    $pdo->prepare($sql_trajets)->execute([$id_voiture]);
+
+    $sql_voiture = "DELETE FROM voiture WHERE voiture_id = ?";
+    $pdo->prepare($sql_voiture)->execute([$id_voiture]);
+
+    $pdo->commit();
+    header("Location: profil.php?succes=suppression_complete");
     exit;
 
 } catch (Exception $e) {
     if ($pdo->inTransaction()) {
         $pdo->rollBack();
     }
-    header("Location: profil.php?error=erreur_critique");
-    exit;
+    die("ERREUR SQL : " . $e->getMessage());
 }

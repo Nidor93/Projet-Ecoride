@@ -10,7 +10,7 @@ if (!isset($_SESSION['utilisateur_id']) || !isset($_GET['trajet_id'])) {
 $user_id = $_SESSION['utilisateur_id'];
 $trajet_id = intval($_GET['trajet_id']);
 
-$stmt_info = $pdo->prepare("SELECT t.ville_depart, t.ville_arrivee, u.sexe, u.prenom, u.nom, u.photo_profil, u.telephone, u.utilisateur_id AS interlocuteur_id
+$stmt_info = $pdo->prepare("SELECT t.ville_depart, t.ville_arrivee, t.trajet_id, u.sexe, u.prenom, u.nom, u.photo_profil, u.telephone, u.utilisateur_id AS interlocuteur_id
                             FROM trajet t
                             JOIN messagerie m ON t.trajet_id = m.trajet_id
                             JOIN utilisateur u ON (u.utilisateur_id = m.expediteur_id OR u.utilisateur_id = m.destinataire_id)
@@ -75,6 +75,9 @@ $messages = $stmt_msg->fetchAll();
                     <br>
                     <p class="fw-bold">Conversation pour le trajet :<br>
                     <strong><?= htmlspecialchars($info['ville_depart']) ?> → <?= htmlspecialchars($info['ville_arrivee']) ?></strong></p>
+                    <button type="button" class="btn btn-sm btn-success w-50" data-bs-toggle="modal" data-bs-target="#modalSignaler">
+                        Signaler l'utilisateur ?
+                    </button>
                 </div>
             </div>
         </div>
@@ -103,6 +106,48 @@ $messages = $stmt_msg->fetchAll();
                     </form>
                 </div>
             </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalSignaler" tabindex="-1" aria-labelledby="modalSignalerLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            
+            <div class="modal-header bg-danger text-white">
+                <h5 class="modal-title" id="modalSignalerLabel" class="fw-bold">Signaler un comportement</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <form action="traitement_avis.php" method="POST">
+                <div class="modal-body p-4">
+                    <input type="hidden" name="trajet_id" value="<?php echo $info['trajet_id']; ?>">
+                    <input type="hidden" name="utilisateur_id" value="<?php echo $info['interlocuteur_id']; ?>">
+                    <input type="hidden" name="passager_id" value="<?php echo $_SESSION['utilisateur_id']; ?>">
+
+                    <input type="hidden" name="note" value="1"> 
+                    <input type="hidden" name="etoiles" value="1"> 
+                    <input type="hidden" name="est_valide" value="0"> 
+
+                    <p class="text-muted small mb-3">
+                        Vous signalez <strong><?php echo htmlspecialchars($info['prenom'] . ' ' . $info['nom']); ?></strong>. 
+                        Expliquez brièvement le problème rencontré pour nos administrateurs.
+                    </p>
+
+                    <div class="mb-3">
+                        <label for="commentaire" class="form-label fw-bold">Motif du signalement</label>
+                        <textarea class="form-control" id="commentaire" name="commentaire" rows="4" 
+                            placeholder="Ex: Propos déplacés, conduite dangereuse..." required></textarea>
+                    </div>
+                </div>
+
+                <div class="modal-footer bg-light border-0">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
+                    <button type="submit" name="submit_signalement" class="btn btn-danger px-4 fw-bold">
+                        Envoyer le signalement
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

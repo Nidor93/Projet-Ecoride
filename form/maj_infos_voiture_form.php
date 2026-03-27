@@ -1,33 +1,34 @@
 <form method="POST">
+    <input type="hidden" name="vehicule_id" value="<?= $vehicule['vehicule_id'] ?? '' ?>">
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label small fw-bold">Modèle</label>
-                                <input type="text" name="modele" class="form-control" placeholder="Tesla Model 3" required>
+                                <input type="text" name="modele" class="form-control" placeholder="Tesla Model 3" value="<?= htmlspecialchars($vehicule['modele'] ?? '') ?>"required>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label small fw-bold">Immatriculation</label>
-                                <input type="text" name="immatriculation" class="form-control" placeholder="AB-123-CD" required>
+                                <input type="text" name="immatriculation" class="form-control" placeholder="AB-123-CD" value="<?= htmlspecialchars($vehicule['immatriculation'] ?? '') ?>"required>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label small fw-bold">Date de 1ère immat.</label>
-                                <input type="date" name="date_immat" class="form-control" required>
+                                <input type="date" name="date_immat" class="form-control" value="<?= htmlspecialchars($vehicule['date_immatriculation'] ?? '') ?>"required>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label small fw-bold">Places</label>
-                                <input type="number" name="places" class="form-control" min="1" max="8" value="3" required>
+                                <input type="number" name="places" class="form-control" min="1" max="8" value="3" value="<?= htmlspecialchars($vehicule['places_disponibles'] ?? '') ?>"required>
                             </div>
         
                             <div class="col-12 border-top pt-2">
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="pref_fumeur" id="isFumeur">
+                                    <input class="form-check-input" type="checkbox" name="pref_fumeur" id="isFumeur" <?= (isset($vehicule['pref_fumeur']) && $vehicule['pref_fumeur']) ? 'checked' : '' ?>>
                                     <label class="form-check-label" for="isFumeur">Fumeur OK</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="pref_animal" id="isAnimal">
+                                    <input class="form-check-input" type="checkbox" name="pref_animal" id="isAnimal" <?= (isset($vehicule['pref_animal']) && $vehicule['pref_animal']) ? 'checked' : '' ?>>
                                     <label class="form-check-label" for="isAnimal">Animaux OK</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="checkbox" name="est_electrique" id="isElec">
+                                    <input class="form-check-input" type="checkbox" name="est_electrique" id="isElec" <?= (isset($vehicule['est_electrique']) && $vehicule['est_electrique']) ? 'checked' : '' ?>>
                                     <label class="form-check-label text-info fw-bold" for="isElec">Électrique</label>
                                 </div>
                             </div>
