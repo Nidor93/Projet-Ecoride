@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : ven. 27 mars 2026 à 12:04
+-- Généré le : mer. 08 avr. 2026 à 11:33
 -- Version du serveur : 10.4.32-MariaDB
 -- Version de PHP : 8.2.12
 
@@ -158,7 +158,7 @@ INSERT INTO `trajet` (`trajet_id`, `ville_depart`, `ville_arrivee`, `date_depart
 (5, 'Lyon', 'Paris', '2025-10-29', '04:00:00', 10.00, 2, 5, '09:00:00', 2, 'attente'),
 (6, 'Lille', 'Marseille', '2025-10-30', '05:00:00', 70.00, 3, 6, '14:00:00', 1, 'attente'),
 (18, 'test', 'test', '2026-01-12', '00:00:00', 12.00, 0, 8, '01:00:00', 10, 'termine'),
-(27, 'Paris', 'Lyon', '2026-03-26', '01:30:00', 50.00, 2, 8, '09:00:00', 32, 'attente');
+(27, 'Paris', 'Lyon', '2026-03-26', '01:30:00', 50.00, 2, 8, '09:00:00', 38, 'attente');
 
 -- --------------------------------------------------------
 
@@ -229,8 +229,9 @@ INSERT INTO `voiture` (`voiture_id`, `utilisateur_id`, `marque`, `modele`, `imma
 (4, 4, '', 'Mercedes-Benz AMG G 65', 'YE-974-WP', NULL, 'Noire', 0, 0, 0, 3, 'Pas de nourriture'),
 (5, 5, '', 'Tesla Model 3', 'RH-862-ZH', NULL, 'Noire', 1, 0, 0, 3, 'Pas de nourriture'),
 (6, 6, '', 'Renault Clio 5', 'GH-646-EZ', NULL, 'Rouge', 0, 0, 0, 3, 'Pas de nourriture'),
-(32, 8, '', 'Tesla Model 3', 'ER-785-DF', '2001-02-02', '', 1, 1, 1, 3, 'Pas de nourriture'),
-(33, 26, '', 'Tesla Model 3', '00-000-00', '2006-03-02', '', 1, 0, 1, 3, 'Je transporte tout le temps un barbecue dans mon coffre');
+(33, 26, '', 'Tesla Model 3', '00-000-00', '2006-03-02', '', 1, 0, 1, 3, 'Je transporte tout le temps un barbecue dans mon coffre'),
+(38, 8, '', 'Tesla Model 3', 'ER-785-DF', '2018-06-12', '', 1, 0, 0, 4, ''),
+(40, 8, '', 'prototype', '00-000-00', '2026-04-07', '', 1, 1, 1, 3, 'Pas de nourritures');
 
 --
 -- Index pour les tables déchargées
@@ -333,7 +334,7 @@ ALTER TABLE `utilisateur`
 -- AUTO_INCREMENT pour la table `voiture`
 --
 ALTER TABLE `voiture`
-  MODIFY `voiture_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=34;
+  MODIFY `voiture_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=46;
 
 --
 -- Contraintes pour les tables déchargées

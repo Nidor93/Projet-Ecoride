@@ -1,5 +1,5 @@
 <form method="POST">
-    <input type="hidden" name="vehicule_id" value="<?= $vehicule['vehicule_id'] ?? '' ?>">
+    <input type="hidden" name="voiture_id" value="<?php echo $v['voiture_id']; ?>">
                         <div class="row g-3">
                             <div class="col-md-6">
                                 <label class="form-label small fw-bold">Modèle</label>
