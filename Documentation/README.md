@@ -15,7 +15,7 @@ Employe2 suspendu mail et mot de passe : t@mail.com  Azertyuiop/1
 
 
 Lien du gestion de projet : https://trello.com/invite/b/696e073f3b1e1ae83615e77b/ATTIacdaead3476a15092da66e4df2762b602418D8DB/gestion-de-projet
-Lien deployer : https://ecoride-mat.alwaysdata.net
+Lien deployer : https://ecoride-mat.alwaysdata.net (non mis à jour)
 Lien du dépot github : https://github.com/Nidor93/Projet-Ecoride.git
 Lien anglophone : https://write.corbpie.com/converting-minutes-to-hours-and-minutes-with-php/
 

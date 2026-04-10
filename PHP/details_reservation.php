@@ -62,6 +62,7 @@ if (isset($_POST['submit_message'])) {
     }
 }
 
+// Verification si l'utilisateur a deja donner son avi. De base la variable est fausse
 $deja_donne = false;
 if ($user_id) {
     $stmt_verif_avis = $pdo->prepare("SELECT COUNT(*) FROM avis 

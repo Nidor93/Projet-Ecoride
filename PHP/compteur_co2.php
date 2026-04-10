@@ -5,7 +5,8 @@ require_once '../db_connect.php';
 $stmt = $pdo->query("SELECT COUNT(*) FROM reservation");
 $nb_reservations = $stmt->fetchColumn();
 
-$co2_economise = $nb_reservations * 5;
+// Calcule du co2 en kg éviter grace au covoiturage selon le ministère du territoire transition écologique
+$co2_economise = $nb_reservations * 6;
 ?>
 
 <?php include('../components/header.php') ?>

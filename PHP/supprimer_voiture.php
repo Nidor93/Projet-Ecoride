@@ -18,6 +18,7 @@ try {
         die("Erreur : Ce véhicule ne vous appartient pas.");
     }
 
+    // Suppression de chaques éléments lier au véhicule avant de supprimer le véhicule
     $sql_msg = "DELETE FROM messagerie WHERE trajet_id IN (SELECT trajet_id FROM trajet WHERE voiture_id = ?)";
     $pdo->prepare($sql_msg)->execute([$id_voiture]);
 

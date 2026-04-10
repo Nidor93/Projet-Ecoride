@@ -2,9 +2,11 @@
 session_start();
 require_once '../db_connect.php';
 
+// Converssion de la durée max des heures en minutes pour la comparaison SQL
 $duree_heures = !empty($_GET['duree_max_h']) ? floatval($_GET['duree_max_h']) : 999;
 $duree_max_minutes = $duree_heures * 60;
 
+// Utilisation des  % pour une recherche partielle ducoup simplifier la recherche pour l'utilisateur
 $user_id = isset($_SESSION['utilisateur_id']) ? $_SESSION['utilisateur_id'] : 0;
 $depart = "%" . ($_GET['depart'] ?? '') . "%";
 $arrivee = "%" . ($_GET['arrivee'] ?? '') . "%";
@@ -27,6 +29,7 @@ if ($eco_only) {
     $sql .= " AND v.est_electrique = 1";
 }
 
+// Utilisation de HAVING car etoiles est calculer
 $sql .= " HAVING (etoiles >= ? OR etoiles IS NULL)";
 
 $sql .= " ORDER BY t.heure_depart ASC";

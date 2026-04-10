@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const trajetId = chatBox.dataset.trajet;
     const currentUserId = chatBox.dataset.user;
     const chauffeurId = document.getElementById('chauffeur_id').value;
+    // Garde l'Id du message précédent pour ne pas afficher en double
     let lastMessageId = parseInt(chatBox.dataset.lastid) || 0;
 
     function checkNewMessages() {
@@ -26,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     chatForm.addEventListener('submit', function(e) {
-        e.preventDefault();
+        e.preventDefault(); // Empeche le rechargement de la page pour faire comme une messagerie
         const content = messageInput.value.trim();
         if (!content) return;
 
@@ -50,6 +51,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     function appendMessage(msg) {
+        // Verification a qui appartien le message pour agir sur le html css
         const isMe = (msg.expediteur_id == currentUserId);
         const div = document.createElement('div');
         div.className = `msg ${isMe ? 'msg-me' : 'msg-them'}`;
@@ -67,5 +69,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     scrollToBottom();
+    // Appel check_message.php toute les 3 secondes pour faire comme si la messagerie est en temps reel
     setInterval(checkNewMessages, 3000);
 });

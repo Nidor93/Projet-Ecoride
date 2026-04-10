@@ -1,5 +1,6 @@
 <?php
 $page = basename($_SERVER['PHP_SELF']);
+// Vérification pour la petite pastille de notification
 $non_lus = 0;
 if (isset($_SESSION['utilisateur_id'])) {
     $stmt_notif = $pdo->prepare("SELECT COUNT(*) FROM messagerie WHERE destinataire_id = ? AND est_lu = 0");

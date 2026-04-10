@@ -17,7 +17,7 @@ try {
     $stmt_chef->execute([$id_cible, $user_id]);
     $trajet_chauffeur = $stmt_chef->fetch();
 
-    if ($trajet_chauffeur) {
+    if ($trajet_chauffeur) { // Annulation du trajet par le chauffeur
         $stmt_p = $pdo->prepare("SELECT u.utilisateur_id, u.email, t.prix, t.ville_depart, t.ville_arrivee, t.date_depart, t.nb_place,
                                  FROM reservation r
                                  JOIN utilisateur u ON r.utilisateur_id = u.utilisateur_id
@@ -46,7 +46,7 @@ try {
         
         $msg_succes = "annule_rembourse";
 
-    } else {
+    } else { // Annulation de la reservation par l'utilisateur
         $stmt_res = $pdo->prepare("SELECT t.statut, t.prix
                                    FROM reservation r 
                                    JOIN trajet t ON r.trajet_id = t.trajet_id 

@@ -13,6 +13,7 @@ $user_id = $_SESSION['utilisateur_id'];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
+    // Mise a jour des informations de l'utilisateur
     if (isset($_POST['email']) && isset($_POST['telephone'])) {
         $email = htmlspecialchars(trim($_POST['email']));
         $numero = htmlspecialchars(trim($_POST['telephone']));
@@ -29,6 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
+    // Mise a jour des véhicules, ajout et modification
     if (isset($_POST['modele']) && isset($_POST['immatriculation'])) {
         $modele = trim($_POST['modele']);
         $immatriculation = trim($_POST['immatriculation']);
