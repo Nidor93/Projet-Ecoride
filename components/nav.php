@@ -17,7 +17,7 @@ if (isset($_SESSION['utilisateur_id'])) {
         </button>
         <div class="collapse navbar-collapse" id="menu">
             <ul class="navbar-nav ms-auto">
-               <li class="nav-item"><a class="nav-link <?= ($page == 'index.php') ? 'active fw-bold' : ''; ?>" href="../PHP/index.php">Accueil</a></li>
+               <li class="nav-item"><a class="nav-link <?= ($page == 'index.php') ? 'active fw-bold' : ''; ?>" href="../index.php">Accueil</a></li>
                <li class="nav-item"><a class="nav-link <?= ($page == 'recherche.php') ? 'active fw-bold' : ''; ?>" href="../PHP/recherche.php">Accès aux Covoiturages</a></li>
             <?php if (isset($_SESSION['utilisateur_id'])): ?>
                <li class="nav-item"><a class="nav-link <?= ($page == 'profil.php') ?'active fw-bold' : ''; ?>" href="../PHP/profil.php">Mon Profil</a></li>

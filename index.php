@@ -1,15 +1,15 @@
 <?php
 session_start();
-require_once '../db_connect.php';
+require_once 'db_connect.php';
 
 $queryEco = $pdo->query("SELECT COUNT(*) FROM voiture WHERE est_electrique = 1");
 $nbEco = $queryEco->fetchColumn();
 ?>
-<?php include('../components/header.php') ?>
+<?php include('components/header.php') ?>
 
 <body class="d-flex flex-column min-vh-100">
 
-<?php include('../components/nav.php') ?>
+<?php include('components/nav.php') ?>
 
 <section class="hero text-center py-5">
     <div class="container">
@@ -18,7 +18,7 @@ $nbEco = $queryEco->fetchColumn();
             Le covoiturage écologique pour réduire votre impact environnemental.
         </p>
 
-        <form action="../PHP/recherche.php" method="GET" class="row g-3 justify-content-center mt-4">
+        <form action="PHP/recherche.php" method="GET" class="row g-3 justify-content-center mt-4">
             <div class="col-md-4">
                <input type="text" name="depart" class="form-control" placeholder="Ville de départ" required>
             </div>
@@ -37,27 +37,27 @@ $nbEco = $queryEco->fetchColumn();
     <div class="row text-center">
         <section class="container2">
             <div class="col-md-14 g-6">
-                <div class="eco-icon"><img src="../Image/VoitureEcoRide.png" alt="Voiture EcoRide" class ="Image"></div>
+                <div class="eco-icon"><img src="Image/VoitureEcoRide.png" alt="Voiture EcoRide" class ="Image"></div>
                 <h4 class="mt-3">Écologique</h4>
                 <p>Prioriter aux trajets en voiture électrique et responsable.</p>
             </div>
         </section>
         <section class="container2">
             <div class="col-md-14 g-6">
-                <div class="eco-icon"><img src="../Image/Electricite-verte.png" alt="Ampoule représentant l'energie verte" class ="Image"></div>
+                <div class="eco-icon"><img src="Image/Electricite-verte.png" alt="Ampoule représentant l'energie verte" class ="Image"></div>
                 <h4 class="mt-3">Economique</h4>
                 <p>Partagez les frais et voyagez à moindre coût.</p>
             </div>
         </section>
         <section class="container2">
             <div class="col-md-14 g-6">
-                <div class="eco-icon"><img src="../Image/Shakehands.png" alt="Poignet de main" class ="Image"></div>
+                <div class="eco-icon"><img src="Image/Shakehands.png" alt="Poignet de main" class ="Image"></div>
                 <h4 class="mt-3">Convivial</h4>
                 <p>Rencontrez des voyageurs partageant les mêmes valeurs.</p>
             </div>
         </section>
     </div>
 </section>
-<?php include("../components/footer.html"); ?>
+<?php include("components/footer.html"); ?>
 
 </body>
